@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('email')->unique();  // Ensured email is unique
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');  // Password remains the same
+            $table->boolean('isAdmin')->default(false);  // Added isAdmin
+            $table->boolean('isUser')->default(true);    // Added isUser
             $table->rememberToken();    // Remember token for user sessions
             $table->timestamps();
         });
