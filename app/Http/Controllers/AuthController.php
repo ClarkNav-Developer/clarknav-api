@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Cookie;
+use App\Models\ActivityHistory;
+use App\Models\RefreshToken;
+use Illuminate\Support\Str; // Add this line
 
 class AuthController extends Controller
 {
@@ -109,6 +112,7 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
+            'remember_me' => 'boolean'
         ]);
 
         // Attempt to authenticate the user
@@ -118,14 +122,23 @@ class AuthController extends Controller
 
         // Get the authenticated user
         $user = JWTAuth::user();
-        
+        $refreshToken = Str::random(60);
+        RefreshToken::create(['user_id' => $user->id, 'token' => $refreshToken]);
+
+        if ($request->remember_me) {
+            $user->setRememberToken(Str::random(60));
+            $user->save();
+        }
+
 
         // Set the token in a cookie
-        $cookie = Cookie::make('token', $token, 60 * 24); // 1 day expiration
+        $cookie = Cookie::make('token', $token, 60 * 24, null, null, false, true); // 1 day expiration, HTTP-only
 
-        // Return the token in the response
+
+        // Return the token and user information in the response
         return response()->json([
             'token' => $token,
+            'refresh_token' => $refreshToken,
             'user' => $user
         ], 200)->withCookie($cookie);
     }
@@ -143,19 +156,27 @@ class AuthController extends Controller
      *             @OA\Property(property="message", type="string", example="Successfully logged out")
      *         )
      *     ),
+     * @OA\Response(response=500, description="Failed to invalidate token"),
      *     @OA\Response(
      *         response=401,
      *         description="Unauthorized",
      *         @OA\JsonContent(
      *             @OA\Property(property="error", type="string", example="Unauthorized")
      *         )
-     *     )
+     *     ),
      * )
      */
-    public function logout()
+    public function logout(Request $request)
     {
+        // Get the authenticated user
+        $user = JWTAuth::parseToken()->authenticate();
+
         // Invalidate the token
-        JWTAuth::invalidate(JWTAuth::getToken());
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken());
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json(['error' => 'Failed to invalidate token'], 500);
+        }
 
         // Remove the token cookie
         $cookie = Cookie::forget('token');
@@ -166,57 +187,72 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/change-password",
-     *     summary="Change the authenticated user's password",
+     *     path="/api/refresh",
+     *     summary="Refresh JWT token",
      *     tags={"Auth"},
-     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"current_password","new_password","new_password_confirmation"},
-     *             @OA\Property(property="current_password", type="string", format="password", example="oldPassword123"),
-     *             @OA\Property(property="new_password", type="string", format="password", example="newPassword123"),
-     *             @OA\Property(property="new_password_confirmation", type="string", format="password", example="newPassword123")
-     *         )
+     *             required={"refresh_token"},
+     *             @OA\Property(property="refresh_token", type="string", example="some_refresh_token")
+     *         ),
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Password changed successfully",
+     *         description="Token refreshed successfully",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="Password changed successfully")
+     *             @OA\Property(property="token", type="string")
      *         )
      *     ),
      *     @OA\Response(
-     *         response=400,
-     *         description="Invalid current password",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="error", type="string", example="Current password is incorrect")
-     *         )
+     *         response=401,
+     *         description="Invalid refresh token"
      *     )
      * )
      */
 
-    public function changePassword(Request $request)
+    public function refresh(Request $request)
     {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'current_password' => 'required|string',
-            'new_password' => 'required|string|min:8|confirmed',
-        ]);
+        $request->validate(['refresh_token' => 'required|string']);
 
-        // Get the authenticated user
-        $user = JWTAuth::parseToken()->authenticate();
+        $refreshToken = RefreshToken::where('token', $request->refresh_token)->first();
 
-        // Check if the current password is correct
-        if (!Hash::check($validatedData['current_password'], $user->password)) {
-            return response()->json(['error' => 'Current password is incorrect'], 400);
+        if (!$refreshToken) {
+            return response()->json(['error' => 'Invalid refresh token'], 401);
         }
 
-        // Update the user's password
-        $user->password = Hash::make($validatedData['new_password']);
-        $user->save();
+        $token = JWTAuth::fromUser($refreshToken->user);
 
-        return response()->json(['message' => 'Password changed successfully'], 200);
+        return response()->json(['token' => $token], 200);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/some-user-action",
+     *     summary="Log some user action",
+     *     tags={"User"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"action"},
+     *             @OA\Property(property="action", type="string", example="Some action")
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Action logged successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Action logged")
+     *         )
+     *     )
+     * )
+     */
+    public function someUserAction(Request $request)
+    {
+        $user = JWTAuth::user();
+        ActivityHistory::create(['user_id' => $user->id, 'action' => 'Some action']);
+
+        return response()->json(['message' => 'Action logged'], 200);
     }
 
     /**
@@ -267,8 +303,9 @@ class AuthController extends Controller
      *             required={"first_name","last_name","password","password_confirmation"},
      *             @OA\Property(property="first_name", type="string", example="John"),
      *             @OA\Property(property="last_name", type="string", example="Doe"),
-     *             @OA\Property(property="password", type="string", format="password", example="newPassword123"),
-     *             @OA\Property(property="password_confirmation", type="string", format="password", example="newPassword123")
+     *             @OA\Property(property="current_password", type="string", format="password", example="oldPassword123"),
+     *             @OA\Property(property="new_password", type="string", format="password", example="newPassword123"),
+     *             @OA\Property(property="new_password_confirmation", type="string", format="password", example="newPassword123")
      *         )
      *     ),
      *     @OA\Response(
@@ -292,7 +329,8 @@ class AuthController extends Controller
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'password' => 'required|string|min:8|confirmed',
+            'current_password' => 'required_with:new_password|string',
+            'new_password' => 'nullable|string|min:8|confirmed',
         ]);
 
         $user = User::findOrFail($id);
@@ -302,9 +340,19 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        // Update user details
         $user->first_name = $validatedData['first_name'];
         $user->last_name = $validatedData['last_name'];
-        $user->password = Hash::make($validatedData['password']);
+
+        // Change password if provided
+        if (!empty($validatedData['new_password'])) {
+            // Check if the current password is correct
+            if (!Hash::check($validatedData['current_password'], $user->password)) {
+                return response()->json(['error' => 'Current password is incorrect'], 400);
+            }
+            $user->password = Hash::make($validatedData['new_password']);
+        }
+
         $user->save();
 
         return response()->json(['message' => 'User credentials updated successfully', 'succeeded' => true], 200);

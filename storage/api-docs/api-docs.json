@@ -184,6 +184,9 @@
                             }
                         }
                     },
+                    "500": {
+                        "description": "Failed to invalidate token"
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "content": {
@@ -208,38 +211,25 @@
                 ]
             }
         },
-        "/api/change-password": {
+        "/api/refresh": {
             "post": {
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Change the authenticated user's password",
-                "operationId": "540baf9b2324b156be71c57911de6714",
+                "summary": "Refresh JWT token",
+                "operationId": "2c27d311a2876560fcb5a754b556cdc5",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "current_password",
-                                    "new_password",
-                                    "new_password_confirmation"
+                                    "refresh_token"
                                 ],
                                 "properties": {
-                                    "current_password": {
+                                    "refresh_token": {
                                         "type": "string",
-                                        "format": "password",
-                                        "example": "oldPassword123"
-                                    },
-                                    "new_password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "newPassword123"
-                                    },
-                                    "new_password_confirmation": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "newPassword123"
+                                        "example": "some_refresh_token"
                                     }
                                 },
                                 "type": "object"
@@ -249,14 +239,13 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Password changed successfully",
+                        "description": "Token refreshed successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Password changed successfully"
+                                        "token": {
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -264,15 +253,48 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid current password",
+                    "401": {
+                        "description": "Invalid refresh token"
+                    }
+                }
+            }
+        },
+        "/api/some-user-action": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Log some user action",
+                "operationId": "68d14ae49c9fe4ef326435641ddb5e1b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "action"
+                                ],
+                                "properties": {
+                                    "action": {
+                                        "type": "string",
+                                        "example": "Some action"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Action logged successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
-                                            "example": "Current password is incorrect"
+                                            "example": "Action logged"
                                         }
                                     },
                                     "type": "object"
@@ -280,12 +302,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/get-identity": {
@@ -380,12 +397,17 @@
                                         "type": "string",
                                         "example": "Doe"
                                     },
-                                    "password": {
+                                    "current_password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "oldPassword123"
+                                    },
+                                    "new_password": {
                                         "type": "string",
                                         "format": "password",
                                         "example": "newPassword123"
                                     },
-                                    "password_confirmation": {
+                                    "new_password_confirmation": {
                                         "type": "string",
                                         "format": "password",
                                         "example": "newPassword123"
@@ -442,6 +464,10 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "User",
+            "description": "User"
         }
     ]
 }
