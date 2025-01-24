@@ -458,6 +458,316 @@
                     }
                 ]
             }
+        },
+        "/api/bug-reports": {
+            "post": {
+                "tags": [
+                    "Bug Reports"
+                ],
+                "summary": "Create a new bug report",
+                "operationId": "3f33bc72bbf8f0d6b9a11e9e0b8ed4c4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "priority",
+                                    "status",
+                                    "device",
+                                    "device_os",
+                                    "browser"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "App Crashes When Searching for Routes"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "The app crashes when I try to search for a route using public transit."
+                                    },
+                                    "priority": {
+                                        "type": "string",
+                                        "enum": [
+                                            "LOW",
+                                            "MEDIUM",
+                                            "HIGH",
+                                            "CRITICAL"
+                                        ],
+                                        "example": "HIGH"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "OPEN",
+                                            "IN_PROGRESS",
+                                            "RESOLVED",
+                                            "CLOSED"
+                                        ],
+                                        "example": "OPEN"
+                                    },
+                                    "device": {
+                                        "type": "string",
+                                        "example": "iPhone 12"
+                                    },
+                                    "device_os": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ANDROID",
+                                            "IOS",
+                                            "WINDOWS",
+                                            "MACOS",
+                                            "LINUX",
+                                            "OTHER"
+                                        ],
+                                        "example": "IOS"
+                                    },
+                                    "browser": {
+                                        "type": "string",
+                                        "enum": [
+                                            "CHROME",
+                                            "SAFARI",
+                                            "FIREFOX",
+                                            "EDGE",
+                                            "OPERA",
+                                            "OTHER"
+                                        ],
+                                        "example": "SAFARI"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Bug report created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "App Crashes When Searching for Routes"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "The app crashes when I try to search for a route using public transit."
+                                        },
+                                        "priority": {
+                                            "type": "string",
+                                            "enum": [
+                                                "LOW",
+                                                "MEDIUM",
+                                                "HIGH",
+                                                "CRITICAL"
+                                            ],
+                                            "example": "HIGH"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                "OPEN",
+                                                "IN_PROGRESS",
+                                                "RESOLVED",
+                                                "CLOSED"
+                                            ],
+                                            "example": "OPEN"
+                                        },
+                                        "device": {
+                                            "type": "string",
+                                            "example": "iPhone 12"
+                                        },
+                                        "device_os": {
+                                            "type": "string",
+                                            "enum": [
+                                                "ANDROID",
+                                                "IOS",
+                                                "WINDOWS",
+                                                "MACOS",
+                                                "LINUX",
+                                                "OTHER"
+                                            ],
+                                            "example": "IOS"
+                                        },
+                                        "browser": {
+                                            "type": "string",
+                                            "enum": [
+                                                "CHROME",
+                                                "SAFARI",
+                                                "FIREFOX",
+                                                "EDGE",
+                                                "OPERA",
+                                                "OTHER"
+                                            ],
+                                            "example": "SAFARI"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/feedback": {
+            "post": {
+                "tags": [
+                    "Feedback"
+                ],
+                "summary": "Submit feedback",
+                "operationId": "56856004f3f1ff7348d61b08c145d1bc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "comments",
+                                    "category",
+                                    "priority",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Suggestions for Improving Navigation Experience"
+                                    },
+                                    "comments": {
+                                        "type": "string",
+                                        "example": "It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "enum": [
+                                            "FEATURE_SUGGESTION",
+                                            "USABILITY_ISSUE",
+                                            "APP_PERFORMANCE",
+                                            "ROUTE_ACCURACY",
+                                            "GENERAL_EXPERIENCE",
+                                            "ADDITIONAL_SUGGESTIONS"
+                                        ],
+                                        "example": "FEATURE_SUGGESTION"
+                                    },
+                                    "priority": {
+                                        "type": "string",
+                                        "enum": [
+                                            "LOW",
+                                            "MEDIUM",
+                                            "HIGH"
+                                        ],
+                                        "example": "MEDIUM"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "UNDER_REVIEW",
+                                            "IN_PROGRESS",
+                                            "IMPLEMENTED",
+                                            "CLOSED"
+                                        ],
+                                        "example": "UNDER_REVIEW"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Feedback submitted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "Suggestions for Improving Navigation Experience"
+                                        },
+                                        "comments": {
+                                            "type": "string",
+                                            "example": "It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "enum": [
+                                                "FEATURE_SUGGESTION",
+                                                "USABILITY_ISSUE",
+                                                "APP_PERFORMANCE",
+                                                "ROUTE_ACCURACY",
+                                                "GENERAL_EXPERIENCE",
+                                                "ADDITIONAL_SUGGESTIONS"
+                                            ],
+                                            "example": "FEATURE_SUGGESTION"
+                                        },
+                                        "priority": {
+                                            "type": "string",
+                                            "enum": [
+                                                "LOW",
+                                                "MEDIUM",
+                                                "HIGH"
+                                            ],
+                                            "example": "MEDIUM"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "enum": [
+                                                "UNDER_REVIEW",
+                                                "IN_PROGRESS",
+                                                "IMPLEMENTED",
+                                                "CLOSED"
+                                            ],
+                                            "example": "UNDER_REVIEW"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -468,6 +778,14 @@
         {
             "name": "User",
             "description": "User"
+        },
+        {
+            "name": "Bug Reports",
+            "description": "Bug Reports"
+        },
+        {
+            "name": "Feedback",
+            "description": "Feedback"
         }
     ]
 }
