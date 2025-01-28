@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Feedback;
 use Illuminate\Http\Request;
-use App\Enums\FeedbackCategory;
+use Illuminate\Support\Facades\Auth;
 use App\Enums\FeedbackPriority;
 use App\Enums\FeedbackStatus;
 
@@ -16,11 +16,14 @@ use App\Enums\FeedbackStatus;
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
- *             required={"title","comments","category","priority","status"},
+ *             required={"title","feature"},
  *             @OA\Property(property="title", type="string", example="Suggestions for Improving Navigation Experience"),
- *             @OA\Property(property="comments", type="string", example="It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."),
- *             @OA\Property(property="category", type="string", enum={"FEATURE_SUGGESTION","USABILITY_ISSUE","APP_PERFORMANCE","ROUTE_ACCURACY","GENERAL_EXPERIENCE","ADDITIONAL_SUGGESTIONS"}, example="FEATURE_SUGGESTION"),
- *             @OA\Property(property="priority", type="string", enum={"LOW","MEDIUM","HIGH"}, example="MEDIUM"),
+ *             @OA\Property(property="feature", type="string", example="It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."),
+ *             @OA\Property(property="usability", type="string", example="The app is difficult to navigate."),
+ *             @OA\Property(property="performance", type="string", example="The app is slow to load."),
+ *             @OA\Property(property="experience", type="string", example="Overall, the app is useful but could be improved."),
+ *             @OA\Property(property="suggestions", type="string", example="Add more features for route planning."),
+ *             @OA\Property(property="priority", type="string", enum={"LOW","MEDIUM","HIGH"}, example="LOW"),
  *             @OA\Property(property="status", type="string", enum={"UNDER_REVIEW","IN_PROGRESS","IMPLEMENTED","CLOSED"}, example="UNDER_REVIEW")
  *         )
  *     ),
@@ -30,9 +33,12 @@ use App\Enums\FeedbackStatus;
  *         @OA\JsonContent(
  *             @OA\Property(property="id", type="integer", example=1),
  *             @OA\Property(property="title", type="string", example="Suggestions for Improving Navigation Experience"),
- *             @OA\Property(property="comments", type="string", example="It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."),
- *             @OA\Property(property="category", type="string", enum={"FEATURE_SUGGESTION", "USABILITY_ISSUE", "APP_PERFORMANCE", "ROUTE_ACCURACY", "GENERAL_EXPERIENCE", "ADDITIONAL_SUGGESTIONS"}, example="FEATURE_SUGGESTION"),
- *             @OA\Property(property="priority", type="string", enum={"LOW", "MEDIUM", "HIGH"}, example="MEDIUM"),
+ *             @OA\Property(property="feature", type="string", example="It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."),
+ *             @OA\Property(property="usability", type="string", example="The app is difficult to navigate."),
+ *             @OA\Property(property="performance", type="string", example="The app is slow to load."),
+ *             @OA\Property(property="experience", type="string", example="Overall, the app is useful but could be improved."),
+ *             @OA\Property(property="suggestions", type="string", example="Add more features for route planning."),
+ *             @OA\Property(property="priority", type="string", enum={"LOW", "MEDIUM", "HIGH"}, example="LOW"),
  *             @OA\Property(property="status", type="string", enum={"UNDER_REVIEW", "IN_PROGRESS", "IMPLEMENTED", "CLOSED"}, example="UNDER_REVIEW"),
  *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
  *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
@@ -50,11 +56,18 @@ class FeedbackController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'comments' => 'required|string',
-            'category' => 'required|in:FEATURE_SUGGESTION,USABILITY_ISSUE,APP_PERFORMANCE,ROUTE_ACCURACY,GENERAL_EXPERIENCE,ADDITIONAL_SUGGESTIONS',
-            'priority' => 'required|in:LOW,MEDIUM,HIGH',
-            'status' => 'required|in:UNDER_REVIEW,IN_PROGRESS,IMPLEMENTED,CLOSED',
+            'feature' => 'nullable|string',
+            'usability' => 'nullable|string',
+            'performance' => 'nullable|string',
+            'experience' => 'nullable|string',
+            'suggestions' => 'nullable|string',
+            'priority' => 'required|string|in:' . implode(',', FeedbackPriority::values()),
+            'status' => 'required|string|in:' . implode(',', FeedbackStatus::values()),
         ]);
+
+        if (Auth::check()) {
+            $validatedData['user_id'] = Auth::id();
+        }
 
         $feedback = Feedback::create($validatedData);
 

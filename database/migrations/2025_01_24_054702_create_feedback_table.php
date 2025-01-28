@@ -10,12 +10,15 @@ return new class extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('title');
-            $table->text('comments');
-            $table->enum('category', ['FEATURE_SUGGESTION', 'USABILITY_ISSUE', 'APP_PERFORMANCE', 'ROUTE_ACCURACY', 'GENERAL_EXPERIENCE', 'ADDITIONAL_SUGGESTIONS']);
-            $table->enum('priority', ['LOW', 'MEDIUM', 'HIGH']);
-            $table->enum('status', ['UNDER_REVIEW', 'IN_PROGRESS', 'IMPLEMENTED', 'CLOSED']);
+            $table->text('feature');
+            $table->text('usability')->nullable();
+            $table->text('performance')->nullable();
+            $table->text('experience')->nullable();
+            $table->text('suggestions')->nullable();
+            $table->string('priority')->default('LOW');
+            $table->string('status')->default('UNDER_REVIEW');
             $table->timestamps();
         });
     }

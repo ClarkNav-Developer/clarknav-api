@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\BugReport;
 use Illuminate\Http\Request;
-use App\Enums\BugStatus;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Enums\BugCategory;
+use App\Enums\BugFrequency;
 use App\Enums\BugPriority;
-use App\Enums\DeviceOrOSType;
-use App\Enums\BrowserType;
+use App\Enums\BugStatus;
 
 /**
  * @OA\Post(
@@ -17,14 +19,16 @@ use App\Enums\BrowserType;
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
- *             required={"title","description","priority","status","device","device_os","browser"},
+ *             required={"title","category","description","steps","expected","actual","device","frequency"},
  *             @OA\Property(property="title", type="string", example="App Crashes When Searching for Routes"),
+ *             @OA\Property(property="category", type="string", example="UI/UX Issue"),
  *             @OA\Property(property="description", type="string", example="The app crashes when I try to search for a route using public transit."),
- *             @OA\Property(property="priority", type="string", enum={"LOW","MEDIUM","HIGH","CRITICAL"}, example="HIGH"),
- *             @OA\Property(property="status", type="string", enum={"OPEN","IN_PROGRESS","RESOLVED","CLOSED"}, example="OPEN"),
- *             @OA\Property(property="device", type="string", example="iPhone 12"),
- *             @OA\Property(property="device_os", type="string", enum={"ANDROID","IOS","WINDOWS","MACOS","LINUX","OTHER"}, example="IOS"),
- *             @OA\Property(property="browser", type="string", enum={"CHROME","SAFARI","FIREFOX","EDGE","OPERA","OTHER"}, example="SAFARI")
+ *             @OA\Property(property="steps", type="string", example="1. Open the app\n2. Search for a route\n3. App crashes"),
+ *             @OA\Property(property="expected", type="string", example="The app should display the search results."),
+ *             @OA\Property(property="actual", type="string", example="The app crashes."),
+ *             @OA\Property(property="device", type="string", example="iPhone 12, iOS 14.4"),
+ *             @OA\Property(property="frequency", type="string", example="Always"),
+ *             @OA\Property(property="screenshots", type="string", format="binary", nullable=true)
  *         )
  *     ),
  *     @OA\Response(
@@ -33,12 +37,14 @@ use App\Enums\BrowserType;
  *         @OA\JsonContent(
  *             @OA\Property(property="id", type="integer", example=1),
  *             @OA\Property(property="title", type="string", example="App Crashes When Searching for Routes"),
+ *             @OA\Property(property="category", type="string", example="UI/UX Issue"),
  *             @OA\Property(property="description", type="string", example="The app crashes when I try to search for a route using public transit."),
- *             @OA\Property(property="priority", type="string", enum={"LOW", "MEDIUM", "HIGH", "CRITICAL"}, example="HIGH"),
- *             @OA\Property(property="status", type="string", enum={"OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"}, example="OPEN"),
- *             @OA\Property(property="device", type="string", example="iPhone 12"),
- *             @OA\Property(property="device_os", type="string", enum={"ANDROID", "IOS", "WINDOWS", "MACOS", "LINUX", "OTHER"}, example="IOS"),
- *             @OA\Property(property="browser", type="string", enum={"CHROME", "SAFARI", "FIREFOX", "EDGE", "OPERA", "OTHER"}, example="SAFARI"),
+ *             @OA\Property(property="steps", type="string", example="1. Open the app\n2. Search for a route\n3. App crashes"),
+ *             @OA\Property(property="expected", type="string", example="The app should display the search results."),
+ *             @OA\Property(property="actual", type="string", example="The app crashes."),
+ *             @OA\Property(property="device", type="string", example="iPhone 12, iOS 14.4"),
+ *             @OA\Property(property="frequency", type="string", example="Always"),
+ *             @OA\Property(property="screenshots", type="string", example="screenshots/example.png", nullable=true),
  *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
  *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
  *         )
@@ -49,19 +55,31 @@ use App\Enums\BrowserType;
  *     )
  * )
  */
+
 class BugReportController extends Controller
 {
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
+            'category' => 'required|string|in:' . implode(',', BugCategory::values()),
             'description' => 'required|string',
-            'priority' => 'required|in:LOW,MEDIUM,HIGH,CRITICAL',
-            'status' => 'required|in:OPEN,IN_PROGRESS,RESOLVED,CLOSED',
-            'device' => 'required|string|max:255',
-            'device_os' => 'required|in:ANDROID,IOS,WINDOWS,MACOS,LINUX,OTHER',
-            'browser' => 'required|in:CHROME,SAFARI,FIREFOX,EDGE,OPERA,OTHER',
+            'steps' => 'required|string',
+            'expected' => 'required|string',
+            'actual' => 'required|string',
+            'device' => 'nullable|string',
+            'frequency' => 'required|string|in:' . implode(',', BugFrequency::values()),
+            'screenshots' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        if ($request->hasFile('screenshots')) {
+            $filePath = $request->file('screenshots')->store('screenshots', 'public');
+            $validatedData['screenshots'] = $filePath;
+        }
+
+        if (Auth::check()) {
+            $validatedData['user_id'] = Auth::id();
+        }
 
         $bugReport = BugReport::create($validatedData);
 

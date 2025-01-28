@@ -473,69 +473,51 @@
                             "schema": {
                                 "required": [
                                     "title",
+                                    "category",
                                     "description",
-                                    "priority",
-                                    "status",
+                                    "steps",
+                                    "expected",
+                                    "actual",
                                     "device",
-                                    "device_os",
-                                    "browser"
+                                    "frequency"
                                 ],
                                 "properties": {
                                     "title": {
                                         "type": "string",
                                         "example": "App Crashes When Searching for Routes"
                                     },
+                                    "category": {
+                                        "type": "string",
+                                        "example": "UI/UX Issue"
+                                    },
                                     "description": {
                                         "type": "string",
                                         "example": "The app crashes when I try to search for a route using public transit."
                                     },
-                                    "priority": {
+                                    "steps": {
                                         "type": "string",
-                                        "enum": [
-                                            "LOW",
-                                            "MEDIUM",
-                                            "HIGH",
-                                            "CRITICAL"
-                                        ],
-                                        "example": "HIGH"
+                                        "example": "1. Open the app\\n2. Search for a route\\n3. App crashes"
                                     },
-                                    "status": {
+                                    "expected": {
                                         "type": "string",
-                                        "enum": [
-                                            "OPEN",
-                                            "IN_PROGRESS",
-                                            "RESOLVED",
-                                            "CLOSED"
-                                        ],
-                                        "example": "OPEN"
+                                        "example": "The app should display the search results."
+                                    },
+                                    "actual": {
+                                        "type": "string",
+                                        "example": "The app crashes."
                                     },
                                     "device": {
                                         "type": "string",
-                                        "example": "iPhone 12"
+                                        "example": "iPhone 12, iOS 14.4"
                                     },
-                                    "device_os": {
+                                    "frequency": {
                                         "type": "string",
-                                        "enum": [
-                                            "ANDROID",
-                                            "IOS",
-                                            "WINDOWS",
-                                            "MACOS",
-                                            "LINUX",
-                                            "OTHER"
-                                        ],
-                                        "example": "IOS"
+                                        "example": "Always"
                                     },
-                                    "browser": {
+                                    "screenshots": {
                                         "type": "string",
-                                        "enum": [
-                                            "CHROME",
-                                            "SAFARI",
-                                            "FIREFOX",
-                                            "EDGE",
-                                            "OPERA",
-                                            "OTHER"
-                                        ],
-                                        "example": "SAFARI"
+                                        "format": "binary",
+                                        "nullable": true
                                     }
                                 },
                                 "type": "object"
@@ -558,57 +540,38 @@
                                             "type": "string",
                                             "example": "App Crashes When Searching for Routes"
                                         },
+                                        "category": {
+                                            "type": "string",
+                                            "example": "UI/UX Issue"
+                                        },
                                         "description": {
                                             "type": "string",
                                             "example": "The app crashes when I try to search for a route using public transit."
                                         },
-                                        "priority": {
+                                        "steps": {
                                             "type": "string",
-                                            "enum": [
-                                                "LOW",
-                                                "MEDIUM",
-                                                "HIGH",
-                                                "CRITICAL"
-                                            ],
-                                            "example": "HIGH"
+                                            "example": "1. Open the app\\n2. Search for a route\\n3. App crashes"
                                         },
-                                        "status": {
+                                        "expected": {
                                             "type": "string",
-                                            "enum": [
-                                                "OPEN",
-                                                "IN_PROGRESS",
-                                                "RESOLVED",
-                                                "CLOSED"
-                                            ],
-                                            "example": "OPEN"
+                                            "example": "The app should display the search results."
+                                        },
+                                        "actual": {
+                                            "type": "string",
+                                            "example": "The app crashes."
                                         },
                                         "device": {
                                             "type": "string",
-                                            "example": "iPhone 12"
+                                            "example": "iPhone 12, iOS 14.4"
                                         },
-                                        "device_os": {
+                                        "frequency": {
                                             "type": "string",
-                                            "enum": [
-                                                "ANDROID",
-                                                "IOS",
-                                                "WINDOWS",
-                                                "MACOS",
-                                                "LINUX",
-                                                "OTHER"
-                                            ],
-                                            "example": "IOS"
+                                            "example": "Always"
                                         },
-                                        "browser": {
+                                        "screenshots": {
                                             "type": "string",
-                                            "enum": [
-                                                "CHROME",
-                                                "SAFARI",
-                                                "FIREFOX",
-                                                "EDGE",
-                                                "OPERA",
-                                                "OTHER"
-                                            ],
-                                            "example": "SAFARI"
+                                            "example": "screenshots/example.png",
+                                            "nullable": true
                                         },
                                         "created_at": {
                                             "type": "string",
@@ -646,31 +609,32 @@
                             "schema": {
                                 "required": [
                                     "title",
-                                    "comments",
-                                    "category",
-                                    "priority",
-                                    "status"
+                                    "feature"
                                 ],
                                 "properties": {
                                     "title": {
                                         "type": "string",
                                         "example": "Suggestions for Improving Navigation Experience"
                                     },
-                                    "comments": {
+                                    "feature": {
                                         "type": "string",
                                         "example": "It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."
                                     },
-                                    "category": {
+                                    "usability": {
                                         "type": "string",
-                                        "enum": [
-                                            "FEATURE_SUGGESTION",
-                                            "USABILITY_ISSUE",
-                                            "APP_PERFORMANCE",
-                                            "ROUTE_ACCURACY",
-                                            "GENERAL_EXPERIENCE",
-                                            "ADDITIONAL_SUGGESTIONS"
-                                        ],
-                                        "example": "FEATURE_SUGGESTION"
+                                        "example": "The app is difficult to navigate."
+                                    },
+                                    "performance": {
+                                        "type": "string",
+                                        "example": "The app is slow to load."
+                                    },
+                                    "experience": {
+                                        "type": "string",
+                                        "example": "Overall, the app is useful but could be improved."
+                                    },
+                                    "suggestions": {
+                                        "type": "string",
+                                        "example": "Add more features for route planning."
                                     },
                                     "priority": {
                                         "type": "string",
@@ -679,7 +643,7 @@
                                             "MEDIUM",
                                             "HIGH"
                                         ],
-                                        "example": "MEDIUM"
+                                        "example": "LOW"
                                     },
                                     "status": {
                                         "type": "string",
@@ -712,21 +676,25 @@
                                             "type": "string",
                                             "example": "Suggestions for Improving Navigation Experience"
                                         },
-                                        "comments": {
+                                        "feature": {
                                             "type": "string",
                                             "example": "It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."
                                         },
-                                        "category": {
+                                        "usability": {
                                             "type": "string",
-                                            "enum": [
-                                                "FEATURE_SUGGESTION",
-                                                "USABILITY_ISSUE",
-                                                "APP_PERFORMANCE",
-                                                "ROUTE_ACCURACY",
-                                                "GENERAL_EXPERIENCE",
-                                                "ADDITIONAL_SUGGESTIONS"
-                                            ],
-                                            "example": "FEATURE_SUGGESTION"
+                                            "example": "The app is difficult to navigate."
+                                        },
+                                        "performance": {
+                                            "type": "string",
+                                            "example": "The app is slow to load."
+                                        },
+                                        "experience": {
+                                            "type": "string",
+                                            "example": "Overall, the app is useful but could be improved."
+                                        },
+                                        "suggestions": {
+                                            "type": "string",
+                                            "example": "Add more features for route planning."
                                         },
                                         "priority": {
                                             "type": "string",
@@ -735,7 +703,7 @@
                                                 "MEDIUM",
                                                 "HIGH"
                                             ],
-                                            "example": "MEDIUM"
+                                            "example": "LOW"
                                         },
                                         "status": {
                                             "type": "string",

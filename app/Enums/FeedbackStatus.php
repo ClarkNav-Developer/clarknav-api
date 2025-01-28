@@ -8,4 +8,9 @@ enum FeedbackStatus: string
     case IN_PROGRESS = 'IN_PROGRESS';
     case IMPLEMENTED = 'IMPLEMENTED';
     case CLOSED = 'CLOSED';
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

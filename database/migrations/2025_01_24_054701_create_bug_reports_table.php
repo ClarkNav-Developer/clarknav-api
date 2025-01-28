@@ -10,14 +10,18 @@ return new class extends Migration
     {
         Schema::create('bug_reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('title');
+            $table->string('category')->default('Other');
             $table->text('description');
-            $table->enum('priority', ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']);
-            $table->enum('status', ['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED']);
-            $table->string('device');
-            $table->enum('device_os', ['ANDROID', 'IOS', 'WINDOWS', 'MACOS', 'LINUX', 'OTHER']);
-            $table->enum('browser', ['CHROME', 'SAFARI', 'FIREFOX', 'EDGE', 'OPERA', 'OTHER']);
+            $table->text('steps');
+            $table->text('expected');
+            $table->text('actual');
+            $table->text('device');
+            $table->string('frequency')->default('Rarely');
+            $table->string('screenshots')->nullable();
+            $table->string('priority')->default('LOW');
+            $table->string('status')->default('OPEN');
             $table->timestamps();
         });
     }

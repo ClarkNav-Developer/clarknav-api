@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\FeedbackPriority;
+use App\Enums\FeedbackStatus;
 
 class Feedback extends Model
 {
@@ -12,8 +14,11 @@ class Feedback extends Model
     protected $fillable = [
         'user_id',
         'title',
-        'comments',
-        'category',
+        'feature',
+        'usability',
+        'performance',
+        'experience',
+        'suggestions',
         'priority',
         'status',
     ];
@@ -22,4 +27,9 @@ class Feedback extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    protected $casts = [
+        'priority' => FeedbackPriority::class,
+        'status' => FeedbackStatus::class,
+    ];
 }

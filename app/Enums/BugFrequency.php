@@ -2,11 +2,11 @@
 
 namespace App\Enums;
 
-enum FeedbackPriority: string
+enum BugFrequency: string
 {
-    case LOW = 'LOW';
-    case MEDIUM = 'MEDIUM';
-    case HIGH = 'HIGH';
+    case ALWAYS = 'Always';
+    case SOMETIMES = 'Sometimes';
+    case RARELY = 'Rarely';
 
     public static function values(): array
     {
