@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('custom_routes', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->string('transport_type');
+            $table->json('waypoints');
+            $table->string('color');
+            $table->decimal('fare', 8, 2)->nullable();
+            $table->time('duration')->nullable();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

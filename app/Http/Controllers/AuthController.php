@@ -138,16 +138,16 @@ class AuthController extends Controller
         }
 
 
-        // Set the token in a cookie
-        $cookie = Cookie::make('token', $token, 60 * 24, null, null, false, true); // 1 day expiration, HTTP-only
-
+        // Set the token and refresh token in cookies
+        $tokenCookie = Cookie::make('token', $token, 60 * 24, null, null, false, true); // 1 day expiration, HTTP-only
+        $refreshTokenCookie = Cookie::make('refresh_token', $refreshToken, 60 * 24 * 30, null, null, false, true); // 30 days expiration, HTTP-only
 
         // Return the token and user information in the response
         return response()->json([
             'token' => $token,
             'refresh_token' => $refreshToken,
             'user' => $user
-        ], 200)->withCookie($cookie);
+        ], 200)->withCookie($tokenCookie)->withCookie($refreshTokenCookie);
     }
 
     /**
@@ -185,11 +185,12 @@ class AuthController extends Controller
             return response()->json(['error' => 'Failed to invalidate token'], 500);
         }
 
-        // Remove the token cookie
-        $cookie = Cookie::forget('token');
+        // Remove the token and refresh token cookies
+        $tokenCookie = Cookie::forget('token');
+        $refreshTokenCookie = Cookie::forget('refresh_token');
 
         // Return a response
-        return response()->json(['message' => 'Successfully logged out'])->withCookie($cookie);
+        return response()->json(['message' => 'Successfully logged out'])->withCookie($tokenCookie)->withCookie($refreshTokenCookie);
     }
 
     /**
@@ -232,6 +233,9 @@ class AuthController extends Controller
         }
 
         $token = JWTAuth::fromUser($refreshToken->user);
+
+        // Set the new token in a cookie
+        $cookie = Cookie::make('token', $token, 60 * 24); // 1 day expiration
 
         return response()->json(['token' => $token], 200);
     }

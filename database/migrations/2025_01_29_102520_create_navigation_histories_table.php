@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('location_searches', function (Blueprint $table) {
+        Schema::create('navigation_histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('origin');
             $table->string('destination');
-            $table->integer('frequency')->default(1);
+            $table->json('route_details');
+            $table->boolean('navigation_confirmed')->default(false);
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('location_searches');
+        Schema::dropIfExists('navigation_histories');
     }
-};
+};  
