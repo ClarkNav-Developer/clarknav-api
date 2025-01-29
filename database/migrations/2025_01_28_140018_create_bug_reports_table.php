@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('actual');
             $table->text('device');
             $table->string('frequency')->default('Rarely');
-            $table->string('screenshots')->nullable();
+            $table->json('screenshots')->nullable();
             $table->string('priority')->default('LOW');
             $table->string('status')->default('OPEN');
             $table->timestamps();

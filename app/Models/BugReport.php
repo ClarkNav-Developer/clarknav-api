@@ -38,5 +38,6 @@ class BugReport extends Model
         'frequency' => BugFrequency::class,
         'priority' => BugPriority::class,
         'status' => BugStatus::class,
+        'screenshots' => 'array',
     ];
 }

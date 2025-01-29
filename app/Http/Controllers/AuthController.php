@@ -15,7 +15,7 @@ class AuthController extends Controller
 {
     /**
      * @OA\Post(
-     *     path="/api/register",
+     *     path="/api/auth/register",
      *     summary="Register a new user",
      *     tags={"Auth"},
      *     @OA\RequestBody(
@@ -33,7 +33,7 @@ class AuthController extends Controller
      *         response=201,
      *         description="User registered successfully",
      *         @OA\JsonContent(
-     *             @OA\Property(property="token", type="string", example="jwt_token")
+     *             @OA\Property(property="message", type="string", example="User registered successfully")
      *         )
      *     ),
      *     @OA\Response(
@@ -64,22 +64,22 @@ class AuthController extends Controller
         ]);
 
         // Generate a JWT token for the user
-        // $token = JWTAuth::fromUser($user);
+        $token = JWTAuth::fromUser($user);
 
         // Set the token in a cookie
-        // $cookie = Cookie::make('token', $token, 60 * 24); // 1 day expiration
+        $cookie = Cookie::make('token', $token, 60 * 24); // 1 day expiration
 
         // Return the token in the response
-        // return response()->json(['token' => $token], 201)->withCookie($cookie);
+        return response()->json(['token' => $token], 201)->withCookie($cookie);
 
         // Return a success response without a token
-        return response()->json(['message' => 'User registered successfully'], 201);
+        // return response()->json(['message' => 'User registered successfully'], 201);
     }
 
 
     /**
      * @OA\Post(
-     *     path="/api/login",
+     *     path="/api/auth/login",
      *     summary="Login an existing user",
      *     tags={"Auth"},
      *     @OA\RequestBody(
@@ -94,7 +94,14 @@ class AuthController extends Controller
      *         response=200,
      *         description="User logged in successfully",
      *         @OA\JsonContent(
-     *             @OA\Property(property="token", type="string", example="jwt_token")
+     *             @OA\Property(property="token", type="string", example="jwt_token"),
+     *             @OA\Property(property="refresh_token", type="string", example="some_refresh_token"),
+     *             @OA\Property(property="user", type="object", 
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="first_name", type="string", example="John"),
+     *                 @OA\Property(property="last_name", type="string", example="Doe"),
+     *                 @OA\Property(property="email", type="string", example="john.doe@example.com")
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -145,7 +152,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/logout",
+     *     path="/api/auth/logout",
      *     summary="Logout the authenticated user",
      *     tags={"Auth"},
      *     security={{"bearerAuth":{}}},
@@ -156,14 +163,14 @@ class AuthController extends Controller
      *             @OA\Property(property="message", type="string", example="Successfully logged out")
      *         )
      *     ),
-     * @OA\Response(response=500, description="Failed to invalidate token"),
+     *     @OA\Response(response=500, description="Failed to invalidate token"),
      *     @OA\Response(
      *         response=401,
      *         description="Unauthorized",
      *         @OA\JsonContent(
      *             @OA\Property(property="error", type="string", example="Unauthorized")
      *         )
-     *     ),
+     *     )
      * )
      */
     public function logout(Request $request)
@@ -187,7 +194,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/api/refresh",
+     *     path="/api/auth/refresh",
      *     summary="Refresh JWT token",
      *     tags={"Auth"},
      *     @OA\RequestBody(
@@ -201,12 +208,15 @@ class AuthController extends Controller
      *         response=200,
      *         description="Token refreshed successfully",
      *         @OA\JsonContent(
-     *             @OA\Property(property="token", type="string")
+     *             @OA\Property(property="token", type="string", example="new_jwt_token")
      *         )
      *     ),
      *     @OA\Response(
      *         response=401,
-     *         description="Invalid refresh token"
+     *         description="Invalid refresh token",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Invalid refresh token")
+     *         )
      *     )
      * )
      */
@@ -257,7 +267,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/get-identity",
+     *     path="/api/auth/get-identity",
      *     summary="Get the authenticated user's identity",
      *     tags={"Auth"},
      *     security={{"bearerAuth":{}}},
@@ -265,7 +275,13 @@ class AuthController extends Controller
      *         response=200,
      *         description="Authenticated user identity",
      *         @OA\JsonContent(
-     *             @OA\Property(property="data", type="object", example={"id": 1, "first_name": "John", "last_name": "Doe", "email": "john.doe@example.com"})
+     *             @OA\Property(property="data", type="object", 
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="first_name", type="string", example="John"),
+     *                 @OA\Property(property="last_name", type="string", example="Doe"),
+     *                 @OA\Property(property="email", type="string", example="john.doe@example.com")
+     *             ),
+     *             @OA\Property(property="succeeded", type="boolean", example=true)
      *         )
      *     ),
      *     @OA\Response(
@@ -286,7 +302,7 @@ class AuthController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/api/update-credentials/{id}",
+     *     path="/api/auth/update-credentials/{id}",
      *     summary="Update user credentials",
      *     tags={"Auth"},
      *     security={{"bearerAuth":{}}},
@@ -300,7 +316,7 @@ class AuthController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"first_name","last_name","password","password_confirmation"},
+     *             required={"first_name","last_name","current_password","new_password","new_password_confirmation"},
      *             @OA\Property(property="first_name", type="string", example="John"),
      *             @OA\Property(property="last_name", type="string", example="Doe"),
      *             @OA\Property(property="current_password", type="string", format="password", example="oldPassword123"),
@@ -312,7 +328,8 @@ class AuthController extends Controller
      *         response=200,
      *         description="User credentials updated successfully",
      *         @OA\JsonContent(
-     *             @OA\Property(property="message", type="string", example="User credentials updated successfully")
+     *             @OA\Property(property="message", type="string", example="User credentials updated successfully"),
+     *             @OA\Property(property="succeeded", type="boolean", example=true)
      *         )
      *     ),
      *     @OA\Response(
