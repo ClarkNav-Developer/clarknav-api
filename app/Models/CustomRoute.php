@@ -1,5 +1,5 @@
 <?php
-// app/Models/CustomRoute.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,11 +10,7 @@ class CustomRoute extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'name', 'transport_type', 'waypoints', 'color', 'fare', 'duration'
-    ];
-
-    protected $casts = [
-        'waypoints' => 'array',
+        'user_id', 'origin', 'destination', 'route_name', 'fare', 'student_fare', 'duration', 'departure_time', 'arrival_time', 'departure_date'
     ];
 
     public function user()

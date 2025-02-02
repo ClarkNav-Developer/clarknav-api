@@ -525,7 +525,7 @@
                     "Bug Reports"
                 ],
                 "summary": "Get all bug reports",
-                "operationId": "3264ae041e1bb7c1fa2d1bdf60b3ba04",
+                "operationId": "0c69a79bde946dabd8b0e80ce6bb68f5",
                 "responses": {
                     "200": {
                         "description": "List of bug reports",
@@ -600,7 +600,7 @@
                     "Bug Reports"
                 ],
                 "summary": "Create a new bug report",
-                "operationId": "3f33bc72bbf8f0d6b9a11e9e0b8ed4c4",
+                "operationId": "b554e0b8c6b4d789c8c64e088f353e8d",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -736,7 +736,7 @@
                     "Bug Reports"
                 ],
                 "summary": "Get a specific bug report",
-                "operationId": "faf7ee54a64bc635831e3707aa681255",
+                "operationId": "bdf1e64b6cb68163a5a15a5d3ed1cbdd",
                 "parameters": [
                     {
                         "name": "id",
@@ -821,7 +821,7 @@
                     "Bug Reports"
                 ],
                 "summary": "Update a bug report status",
-                "operationId": "4486dfef64faf393f1f677951b93c507",
+                "operationId": "cb2fcd2904e5e41fcfcfba8ed431fcd3",
                 "parameters": [
                     {
                         "name": "id",
@@ -938,7 +938,7 @@
                     "Bug Reports"
                 ],
                 "summary": "Delete a bug report",
-                "operationId": "5af3f2ec99401f1c3664fd9f894ef093",
+                "operationId": "94a30ad60b3f59f8bb02bf4eca419cf4",
                 "parameters": [
                     {
                         "name": "id",
@@ -959,13 +959,591 @@
                 }
             }
         },
+        "/api/custom-routes": {
+            "get": {
+                "tags": [
+                    "Custom Routes"
+                ],
+                "summary": "Get all custom routes",
+                "operationId": "8ccf2908d8d5fdd44ae6c8f79d50cb93",
+                "responses": {
+                    "200": {
+                        "description": "List of custom routes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "user_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "origin": {
+                                                "type": "string",
+                                                "example": "Astro Park"
+                                            },
+                                            "destination": {
+                                                "type": "string",
+                                                "example": "Clark Airport Parking"
+                                            },
+                                            "route_name": {
+                                                "type": "string",
+                                                "example": "Route 1"
+                                            },
+                                            "fare": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 50
+                                            },
+                                            "student_fare": {
+                                                "type": "number",
+                                                "format": "float",
+                                                "example": 40
+                                            },
+                                            "duration": {
+                                                "type": "string",
+                                                "example": "1 hour"
+                                            },
+                                            "departure_time": {
+                                                "type": "string",
+                                                "example": "08:00 AM"
+                                            },
+                                            "arrival_time": {
+                                                "type": "string",
+                                                "example": "09:00 AM"
+                                            },
+                                            "departure_date": {
+                                                "type": "string",
+                                                "format": "date",
+                                                "example": "2023-01-01"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2023-01-01T00:00:00Z"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2023-01-01T00:00:00Z"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Custom Routes"
+                ],
+                "summary": "Store a new custom route",
+                "operationId": "4239612f0ae5a001515e4049ae8dac52",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "origin",
+                                    "destination",
+                                    "route_name",
+                                    "fare",
+                                    "duration",
+                                    "departure_time",
+                                    "arrival_time",
+                                    "departure_date"
+                                ],
+                                "properties": {
+                                    "origin": {
+                                        "type": "string",
+                                        "example": "Astro Park"
+                                    },
+                                    "destination": {
+                                        "type": "string",
+                                        "example": "Clark Airport Parking"
+                                    },
+                                    "route_name": {
+                                        "type": "string",
+                                        "example": "Route 1"
+                                    },
+                                    "fare": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 50
+                                    },
+                                    "student_fare": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 40
+                                    },
+                                    "duration": {
+                                        "type": "string",
+                                        "example": "1 hour"
+                                    },
+                                    "departure_time": {
+                                        "type": "string",
+                                        "example": "08:00 AM"
+                                    },
+                                    "arrival_time": {
+                                        "type": "string",
+                                        "example": "09:00 AM"
+                                    },
+                                    "departure_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-01-01"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Custom route created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "origin": {
+                                            "type": "string",
+                                            "example": "Astro Park"
+                                        },
+                                        "destination": {
+                                            "type": "string",
+                                            "example": "Clark Airport Parking"
+                                        },
+                                        "route_name": {
+                                            "type": "string",
+                                            "example": "Route 1"
+                                        },
+                                        "fare": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 50
+                                        },
+                                        "student_fare": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 40
+                                        },
+                                        "duration": {
+                                            "type": "string",
+                                            "example": "1 hour"
+                                        },
+                                        "departure_time": {
+                                            "type": "string",
+                                            "example": "08:00 AM"
+                                        },
+                                        "arrival_time": {
+                                            "type": "string",
+                                            "example": "09:00 AM"
+                                        },
+                                        "departure_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2023-01-01"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/custom-routes/{id}": {
+            "get": {
+                "tags": [
+                    "Custom Routes"
+                ],
+                "summary": "Get a specific custom route",
+                "operationId": "41a9427ee2b4dfadeecdb9349ff1a546",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Custom route details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "origin": {
+                                            "type": "string",
+                                            "example": "Astro Park"
+                                        },
+                                        "destination": {
+                                            "type": "string",
+                                            "example": "Clark Airport Parking"
+                                        },
+                                        "route_name": {
+                                            "type": "string",
+                                            "example": "Route 1"
+                                        },
+                                        "fare": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 50
+                                        },
+                                        "student_fare": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 40
+                                        },
+                                        "duration": {
+                                            "type": "string",
+                                            "example": "1 hour"
+                                        },
+                                        "departure_time": {
+                                            "type": "string",
+                                            "example": "08:00 AM"
+                                        },
+                                        "arrival_time": {
+                                            "type": "string",
+                                            "example": "09:00 AM"
+                                        },
+                                        "departure_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2023-01-01"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Custom route not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Custom route not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Custom Routes"
+                ],
+                "summary": "Update a specific custom route",
+                "operationId": "a19565d871af033988698ddc25231a40",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "origin": {
+                                        "type": "string",
+                                        "example": "Astro Park"
+                                    },
+                                    "destination": {
+                                        "type": "string",
+                                        "example": "Clark Airport Parking"
+                                    },
+                                    "route_name": {
+                                        "type": "string",
+                                        "example": "Route 1"
+                                    },
+                                    "fare": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 50
+                                    },
+                                    "student_fare": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 40
+                                    },
+                                    "duration": {
+                                        "type": "string",
+                                        "example": "1 hour"
+                                    },
+                                    "departure_time": {
+                                        "type": "string",
+                                        "example": "08:00 AM"
+                                    },
+                                    "arrival_time": {
+                                        "type": "string",
+                                        "example": "09:00 AM"
+                                    },
+                                    "departure_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-01-01"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Custom route updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "origin": {
+                                            "type": "string",
+                                            "example": "Astro Park"
+                                        },
+                                        "destination": {
+                                            "type": "string",
+                                            "example": "Clark Airport Parking"
+                                        },
+                                        "route_name": {
+                                            "type": "string",
+                                            "example": "Route 1"
+                                        },
+                                        "fare": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 50
+                                        },
+                                        "student_fare": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 40
+                                        },
+                                        "duration": {
+                                            "type": "string",
+                                            "example": "1 hour"
+                                        },
+                                        "departure_time": {
+                                            "type": "string",
+                                            "example": "08:00 AM"
+                                        },
+                                        "arrival_time": {
+                                            "type": "string",
+                                            "example": "09:00 AM"
+                                        },
+                                        "departure_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2023-01-01"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Custom route not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Custom route not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Custom Routes"
+                ],
+                "summary": "Delete a specific custom route",
+                "operationId": "0da4c3b6fefb316dd1d38b6bfb8b7ed0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Custom route deleted successfully"
+                    },
+                    "404": {
+                        "description": "Custom route not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Custom route not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/feedback": {
             "get": {
                 "tags": [
                     "Feedback"
                 ],
                 "summary": "Get all feedback",
-                "operationId": "0a779729c99798436dfa7e6c550494c1",
+                "operationId": "b9a59e3fa02ac43b70e3aed8159d20fb",
                 "responses": {
                     "200": {
                         "description": "List of feedback",
@@ -1046,7 +1624,7 @@
                     "Feedback"
                 ],
                 "summary": "Submit feedback",
-                "operationId": "56856004f3f1ff7348d61b08c145d1bc",
+                "operationId": "73567c0c6ca97cd1fcb79ddac458d4ce",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1188,7 +1766,7 @@
                     "Feedback"
                 ],
                 "summary": "Get a specific feedback",
-                "operationId": "712ccde5911da18ee9461128626b515d",
+                "operationId": "765f9f65b3327d84d22cb387ba850c17",
                 "parameters": [
                     {
                         "name": "id",
@@ -1279,7 +1857,7 @@
                     "Feedback"
                 ],
                 "summary": "Update feedback status",
-                "operationId": "438ad7b6a4e9d711888dcf0d6f98c2f7",
+                "operationId": "3215f0f7d7c7aec0c9fafdd5b94159b3",
                 "parameters": [
                     {
                         "name": "id",
@@ -1398,7 +1976,7 @@
                     "Feedback"
                 ],
                 "summary": "Delete feedback",
-                "operationId": "05bba6c4677a425dac6b1882d009e130",
+                "operationId": "e92c75dd4ee77bdb93b34df76a4757df",
                 "parameters": [
                     {
                         "name": "id",
@@ -1568,21 +2146,16 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
-        "/api/location-searches/{id}/increment": {
-            "patch": {
+        "/api/location-searches/{id}": {
+            "get": {
                 "tags": [
                     "Location Searches"
                 ],
-                "summary": "Increment the frequency of a location search",
-                "operationId": "5e79ffa89d338531d5c27b61f84b3735",
+                "summary": "Get a specific location search",
+                "operationId": "6cebd6ac54833a9288a489123ef159a5",
                 "parameters": [
                     {
                         "name": "id",
@@ -1595,7 +2168,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Location search frequency incremented successfully",
+                        "description": "Location search details",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1618,7 +2191,7 @@
                                         },
                                         "frequency": {
                                             "type": "integer",
-                                            "example": 2
+                                            "example": 1
                                         },
                                         "created_at": {
                                             "type": "string",
@@ -1658,6 +2231,175 @@
                         "bearerAuth": []
                     }
                 ]
+            },
+            "put": {
+                "tags": [
+                    "Location Searches"
+                ],
+                "summary": "Update a location search",
+                "operationId": "aebee6748d0b043bd68978ed8250389e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "origin",
+                                    "destination"
+                                ],
+                                "properties": {
+                                    "origin": {
+                                        "type": "string",
+                                        "example": "New York"
+                                    },
+                                    "destination": {
+                                        "type": "string",
+                                        "example": "Los Angeles"
+                                    },
+                                    "frequency": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Location search updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "origin": {
+                                            "type": "string",
+                                            "example": "New York"
+                                        },
+                                        "destination": {
+                                            "type": "string",
+                                            "example": "Los Angeles"
+                                        },
+                                        "frequency": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Location search not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Location search not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Location Searches"
+                ],
+                "summary": "Delete a location search",
+                "operationId": "b2e0ec6292832e507ceca1ce46a84cf1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Location search deleted successfully"
+                    },
+                    "404": {
+                        "description": "Location search not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Location search not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/navigation-histories": {
@@ -1665,7 +2407,7 @@
                 "tags": [
                     "Navigation Histories"
                 ],
-                "summary": "Get all navigation histories for the authenticated user",
+                "summary": "Get all navigation histories",
                 "operationId": "447ea5ebec29b73d41c8cc2e2430a5d4",
                 "responses": {
                     "200": {
@@ -1683,6 +2425,11 @@
                                             "user_id": {
                                                 "type": "integer",
                                                 "example": 1
+                                            },
+                                            "session_id": {
+                                                "type": "string",
+                                                "format": "uuid",
+                                                "example": "123e4567-e89b-12d3-a456-426614174000"
                                             },
                                             "origin": {
                                                 "type": "string",
@@ -1723,12 +2470,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             },
             "post": {
                 "tags": [
@@ -1791,6 +2533,11 @@
                                             "type": "integer",
                                             "example": 1
                                         },
+                                        "session_id": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "example": "123e4567-e89b-12d3-a456-426614174000"
+                                        },
                                         "origin": {
                                             "type": "string",
                                             "example": "New York"
@@ -1845,6 +2592,509 @@
                             }
                         }
                     }
+                }
+            }
+        },
+        "/api/navigation-histories/{id}": {
+            "delete": {
+                "tags": [
+                    "Navigation Histories"
+                ],
+                "summary": "Delete a navigation history",
+                "operationId": "737bcac0086a6516c92ee3002dcd82f9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Navigation history deleted successfully"
+                    },
+                    "404": {
+                        "description": "Navigation history not found"
+                    }
+                }
+            }
+        },
+        "/api/route-usages": {
+            "get": {
+                "tags": [
+                    "Route Usages"
+                ],
+                "summary": "Get all route usages",
+                "operationId": "a3004b787cfa44e19ab8b9a51517e64a",
+                "responses": {
+                    "200": {
+                        "description": "List of route usages",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "user_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "origin": {
+                                                "type": "string",
+                                                "example": "Astro Park"
+                                            },
+                                            "destination": {
+                                                "type": "string",
+                                                "example": "Clark Airport Parking"
+                                            },
+                                            "route_type": {
+                                                "type": "string",
+                                                "example": "Jeepney"
+                                            },
+                                            "route_name": {
+                                                "type": "string",
+                                                "example": "Route 1"
+                                            },
+                                            "color": {
+                                                "type": "string",
+                                                "example": "#1d58c6"
+                                            },
+                                            "frequency": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2023-01-01T00:00:00Z"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2023-01-01T00:00:00Z"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Route Usages"
+                ],
+                "summary": "Store a new route usage",
+                "operationId": "dd872176a77d9e44da21f1d23fe015ff",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "origin",
+                                    "destination",
+                                    "route_type",
+                                    "route_name",
+                                    "color",
+                                    "frequency"
+                                ],
+                                "properties": {
+                                    "origin": {
+                                        "type": "string",
+                                        "example": "Astro Park"
+                                    },
+                                    "destination": {
+                                        "type": "string",
+                                        "example": "Clark Airport Parking"
+                                    },
+                                    "route_type": {
+                                        "type": "string",
+                                        "example": "Jeepney"
+                                    },
+                                    "route_name": {
+                                        "type": "string",
+                                        "example": "Route 1"
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "#1d58c6"
+                                    },
+                                    "frequency": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Route usage created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "origin": {
+                                            "type": "string",
+                                            "example": "Astro Park"
+                                        },
+                                        "destination": {
+                                            "type": "string",
+                                            "example": "Clark Airport Parking"
+                                        },
+                                        "route_type": {
+                                            "type": "string",
+                                            "example": "Jeepney"
+                                        },
+                                        "route_name": {
+                                            "type": "string",
+                                            "example": "Route 1"
+                                        },
+                                        "color": {
+                                            "type": "string",
+                                            "example": "#1d58c6"
+                                        },
+                                        "frequency": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/route-usages/{id}": {
+            "get": {
+                "tags": [
+                    "Route Usages"
+                ],
+                "summary": "Get a specific route usage",
+                "operationId": "fd3b7cee542d80b1e0e26e1faa84ea6d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Route usage details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "origin": {
+                                            "type": "string",
+                                            "example": "Astro Park"
+                                        },
+                                        "destination": {
+                                            "type": "string",
+                                            "example": "Clark Airport Parking"
+                                        },
+                                        "route_type": {
+                                            "type": "string",
+                                            "example": "Jeepney"
+                                        },
+                                        "route_name": {
+                                            "type": "string",
+                                            "example": "Route 1"
+                                        },
+                                        "color": {
+                                            "type": "string",
+                                            "example": "#1d58c6"
+                                        },
+                                        "frequency": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Route usage not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Route usage not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Route Usages"
+                ],
+                "summary": "Update a specific route usage",
+                "operationId": "4339bb14e9cfa126d2b3fbd2ba4c50b5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "origin": {
+                                        "type": "string",
+                                        "example": "Astro Park"
+                                    },
+                                    "destination": {
+                                        "type": "string",
+                                        "example": "Clark Airport Parking"
+                                    },
+                                    "route_type": {
+                                        "type": "string",
+                                        "example": "Jeepney"
+                                    },
+                                    "route_name": {
+                                        "type": "string",
+                                        "example": "Route 1"
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "#1d58c6"
+                                    },
+                                    "frequency": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Route usage updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "origin": {
+                                            "type": "string",
+                                            "example": "Astro Park"
+                                        },
+                                        "destination": {
+                                            "type": "string",
+                                            "example": "Clark Airport Parking"
+                                        },
+                                        "route_type": {
+                                            "type": "string",
+                                            "example": "Jeepney"
+                                        },
+                                        "route_name": {
+                                            "type": "string",
+                                            "example": "Route 1"
+                                        },
+                                        "color": {
+                                            "type": "string",
+                                            "example": "#1d58c6"
+                                        },
+                                        "frequency": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01T00:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Route usage not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Route usage not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Route Usages"
+                ],
+                "summary": "Delete a specific route usage",
+                "operationId": "99bc586f101ce49d2d050054cc85ef12",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Route usage deleted successfully"
+                    },
+                    "404": {
+                        "description": "Route usage not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Route usage not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
                 },
                 "security": [
                     {
@@ -1868,6 +3118,10 @@
             "description": "Bug Reports"
         },
         {
+            "name": "Custom Routes",
+            "description": "Custom Routes"
+        },
+        {
             "name": "Feedback",
             "description": "Feedback"
         },
@@ -1878,6 +3132,10 @@
         {
             "name": "Navigation Histories",
             "description": "Navigation Histories"
+        },
+        {
+            "name": "Route Usages",
+            "description": "Route Usages"
         }
     ]
 }

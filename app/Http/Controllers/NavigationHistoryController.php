@@ -8,12 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class NavigationHistoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth:api', 'checkUser'])->except(['store']);
+    }
+
     /**
      * @OA\Get(
      *     path="/api/navigation-histories",
-     *     summary="Get all navigation histories for the authenticated user",
+     *     summary="Get all navigation histories",
      *     tags={"Navigation Histories"},
-     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="List of navigation histories",
@@ -32,16 +36,15 @@ class NavigationHistoryController extends Controller
      */
     public function index()
     {
-        $histories = NavigationHistory::where('user_id', Auth::id())->get();
+        $userId = Auth::id();
+        $histories = NavigationHistory::where('user_id', $userId)->get();
         return response()->json($histories);
     }
-
     /**
      * @OA\Post(
      *     path="/api/navigation-histories",
      *     summary="Store a new navigation history",
      *     tags={"Navigation Histories"},
-     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -85,7 +88,7 @@ class NavigationHistoryController extends Controller
         ]);
 
         $history = NavigationHistory::create([
-            'user_id' => Auth::id(),
+            'user_id' => Auth::check() ? Auth::id() : null,
             'origin' => $request->origin,
             'destination' => $request->destination,
             'route_details' => $request->route_details,
@@ -93,5 +96,34 @@ class NavigationHistoryController extends Controller
         ]);
 
         return response()->json($history, 201);
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/navigation-histories/{id}",
+     *     summary="Delete a navigation history",
+     *     tags={"Navigation Histories"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Navigation history deleted successfully"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Navigation history not found"
+     *     )
+     * )
+     */
+    public function destroy($id)
+    {
+        $history = NavigationHistory::findOrFail($id);
+        $history->delete();
+
+        return response()->json(null, 204);
     }
 }

@@ -11,6 +11,7 @@ class NavigationHistory extends Model
 
     protected $fillable = [
         'user_id',
+        'session_id',
         'origin',
         'destination',
         'route_details',

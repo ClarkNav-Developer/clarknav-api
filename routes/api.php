@@ -6,6 +6,8 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\LocationSearchController;
 use App\Http\Controllers\NavigationHistoryController;
+use App\Http\Controllers\RouteUsageController;
+use App\Http\Controllers\CustomRouteController;
 
 // Auth routes
 Route::group(['prefix' => 'auth'], function () {
@@ -17,36 +19,57 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('refresh', [AuthController::class, 'refresh']);
 });
 
-// Public routes
+// Bug Reports routes
 Route::post('bug-reports', [BugReportController::class, 'store']);
-Route::post('feedback', [FeedbackController::class, 'store']);
-
-// Admin routes
 Route::middleware(['auth:api', 'checkAdmin'])->group(function () {
     Route::get('bug-reports', [BugReportController::class, 'index']);
     Route::get('bug-reports/{id}', [BugReportController::class, 'show']);
     Route::put('bug-reports/{id}', [BugReportController::class, 'update']);
     Route::delete('bug-reports/{id}', [BugReportController::class, 'destroy']);
+});
 
+// Feedback routes
+Route::post('feedback', [FeedbackController::class, 'store']);
+Route::middleware(['auth:api', 'checkAdmin'])->group(function () {
     Route::get('feedback', [FeedbackController::class, 'index']);
     Route::get('feedback/{id}', [FeedbackController::class, 'show']);
     Route::put('feedback/{id}', [FeedbackController::class, 'update']);
     Route::delete('feedback/{id}', [FeedbackController::class, 'destroy']);
 });
 
-// Route::middleware('auth:api')->group(function () {
-//     Route::post('location-searches', [TrackingController::class, 'storeLocationSearch']);
-//     Route::post('route-usages', [TrackingController::class, 'storeRouteUsage']);
-//     Route::post('custom-routes', [TrackingController::class, 'storeCustomRoute']);
-// });
-
-Route::middleware('auth:api')->group(function () {
+// Location Searches routes
+Route::post('location-searches', [LocationSearchController::class, 'store']);
+Route::middleware(['auth:api', 'checkAdmin'])->group(function () {
     Route::get('location-searches', [LocationSearchController::class, 'index']);
-    Route::post('location-searches', [LocationSearchController::class, 'store']);
-    Route::patch('location-searches/{id}/increment', [LocationSearchController::class, 'incrementFrequency']);
+    Route::get('location-searches/{id}', [LocationSearchController::class, 'show']);
+    Route::put('location-searches/{id}', [LocationSearchController::class, 'update']);
+    Route::delete('location-searches/{id}', [LocationSearchController::class, 'destroy']);
 });
 
-Route::middleware('auth:api')->group(function () {
-    Route::get('navigation-histories', [NavigationHistoryController::class, 'index']);
+// Navigation Histories routes
+// Route::post('navigation-histories', [NavigationHistoryController::class, 'store']);
+// Route::get('navigation-histories', [NavigationHistoryController::class, 'index']);
+// Route::delete('navigation-histories/{id}', [NavigationHistoryController::class, 'destroy']);
+Route::middleware(['auth:api', 'checkUser'])->group(function () {
     Route::post('navigation-histories', [NavigationHistoryController::class, 'store']);
+    Route::get('navigation-histories', [NavigationHistoryController::class, 'index']);
+    Route::delete('navigation-histories/{id}', [NavigationHistoryController::class, 'destroy']);
+});
+
+// Route Usages routes
+Route::post('route-usages', [RouteUsageController::class, 'store']);
+Route::middleware(['auth:api', 'checkAdmin'])->group(function () {
+    Route::get('route-usages', [RouteUsageController::class, 'index']);
+    Route::get('route-usages/{id}', [RouteUsageController::class, 'show']);
+    Route::put('route-usages/{id}', [RouteUsageController::class, 'update']);
+    Route::delete('route-usages/{id}', [RouteUsageController::class, 'destroy']);
+});
+
+// Custom Routes routes
+Route::middleware(['auth:api', 'checkUser'])->group(function () {
+    Route::get('custom-routes', [CustomRouteController::class, 'index']);
+    Route::post('custom-routes', [CustomRouteController::class, 'store']);
+    Route::get('custom-routes/{id}', [CustomRouteController::class, 'show']);
+    Route::put('custom-routes/{id}', [CustomRouteController::class, 'update']);
+    Route::delete('custom-routes/{id}', [CustomRouteController::class, 'destroy']);
 });

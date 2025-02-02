@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Cookie;
 use App\Models\ActivityHistory;
 use App\Models\RefreshToken;
 use Illuminate\Support\Str; // Add this line
+use App\Models\NavigationHistory;
 
 class AuthController extends Controller
 {
@@ -119,7 +120,6 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
-            'remember_me' => 'boolean'
         ]);
 
         // Attempt to authenticate the user
@@ -132,22 +132,30 @@ class AuthController extends Controller
         $refreshToken = Str::random(60);
         RefreshToken::create(['user_id' => $user->id, 'token' => $refreshToken]);
 
-        if ($request->remember_me) {
-            $user->setRememberToken(Str::random(60));
-            $user->save();
+        // Retrieve session ID from cookie (if exists)
+        $sessionId = $request->cookie('session_id');
+
+        // If a guest was using a session ID, transfer navigation history
+        if ($sessionId) {
+            NavigationHistory::where('session_id', $sessionId)->update([
+                'user_id' => $user->id, 
+                'session_id' => null
+            ]);
         }
 
-
-        // Set the token and refresh token in cookies
+        // Set authentication and refresh token cookies
         $tokenCookie = Cookie::make('token', $token, 60 * 24, null, null, false, true); // 1 day expiration, HTTP-only
         $refreshTokenCookie = Cookie::make('refresh_token', $refreshToken, 60 * 24 * 30, null, null, false, true); // 30 days expiration, HTTP-only
 
-        // Return the token and user information in the response
+        // Return token, user info, and clear session cookie
         return response()->json([
             'token' => $token,
             'refresh_token' => $refreshToken,
             'user' => $user
-        ], 200)->withCookie($tokenCookie)->withCookie($refreshTokenCookie);
+        ], 200)
+        ->withCookie($tokenCookie)
+        ->withCookie($refreshTokenCookie)
+        ->withCookie(Cookie::forget('session_id')); // Clear session cookie after login
     }
 
     /**

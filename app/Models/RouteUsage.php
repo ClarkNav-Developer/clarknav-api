@@ -9,10 +9,18 @@ class RouteUsage extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'route_name', 'waypoints'];
+    protected $fillable = [
+        'user_id', 
+        'origin',
+        'destination',
+        'route_type',
+        'route_name',
+        'color',
+        'frequency',
+    ];
 
     protected $casts = [
-        'waypoints' => 'array',
+        'route_type' => 'array',
     ];
 
     public function user()

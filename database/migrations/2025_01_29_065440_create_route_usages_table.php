@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('route_usages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('origin');
+            $table->string('destination');
+            $table->enum('route_type', ['Jeepney', 'Bus', 'Taxi']);
             $table->string('route_name');
-            $table->json('waypoints');
+            $table->string('color');
+            $table->integer('frequency')->default(0); // Track the frequency of routes taken
             $table->timestamps();
         });
     }
