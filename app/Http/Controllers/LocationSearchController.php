@@ -28,7 +28,6 @@ class LocationSearchController extends Controller
      *             @OA\Property(property="user_id", type="integer", example=1),
      *             @OA\Property(property="origin", type="string", example="New York"),
      *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="frequency", type="integer", example=1),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         ))
@@ -62,7 +61,6 @@ class LocationSearchController extends Controller
      *             @OA\Property(property="user_id", type="integer", example=1),
      *             @OA\Property(property="origin", type="string", example="New York"),
      *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="frequency", type="integer", example=1),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         )
@@ -82,14 +80,13 @@ class LocationSearchController extends Controller
             'origin' => 'required|string|max:255',
             'destination' => 'required|string|max:255',
         ]);
-
+    
         $search = LocationSearch::create([
             'user_id' => Auth::check() ? Auth::id() : null,
             'origin' => $request->origin,
             'destination' => $request->destination,
-            'frequency' => 1
         ]);
-
+    
         return response()->json($search, 201);
     }
 
@@ -113,7 +110,6 @@ class LocationSearchController extends Controller
      *             @OA\Property(property="user_id", type="integer", example=1),
      *             @OA\Property(property="origin", type="string", example="New York"),
      *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="frequency", type="integer", example=1),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         )
@@ -150,8 +146,7 @@ class LocationSearchController extends Controller
      *         @OA\JsonContent(
      *             required={"origin","destination"},
      *             @OA\Property(property="origin", type="string", example="New York"),
-     *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="frequency", type="integer", example=1)
+     *             @OA\Property(property="destination", type="string", example="Los Angeles")
      *         )
      *     ),
      *     @OA\Response(
@@ -162,7 +157,6 @@ class LocationSearchController extends Controller
      *             @OA\Property(property="user_id", type="integer", example=1),
      *             @OA\Property(property="origin", type="string", example="New York"),
      *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="frequency", type="integer", example=1),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         )
@@ -188,7 +182,6 @@ class LocationSearchController extends Controller
         $validatedData = $request->validate([
             'origin' => 'required|string|max:255',
             'destination' => 'required|string|max:255',
-            'frequency' => 'required|integer',
         ]);
 
         $search = LocationSearch::findOrFail($id);

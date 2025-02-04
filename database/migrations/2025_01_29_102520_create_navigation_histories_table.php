@@ -13,15 +13,12 @@ return new class extends Migration
     {
         Schema::create('navigation_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('origin');
             $table->string('destination');
             $table->json('route_details');
             $table->boolean('navigation_confirmed');
             $table->timestamps();
-        
-            // Foreign key constraint
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
         
     }

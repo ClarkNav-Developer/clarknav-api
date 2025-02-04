@@ -10,7 +10,8 @@ class NavigationHistoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:api', 'checkUser'])->except(['store']);
+        // $this->middleware(['auth:api', 'checkUser'])->except(['store']);
+        $this->middleware(['auth:api', 'checkUser']);
     }
 
     /**

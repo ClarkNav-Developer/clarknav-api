@@ -31,7 +31,6 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="route_type", type="string", example="Jeepney"),
      *             @OA\Property(property="route_name", type="string", example="Route 1"),
      *             @OA\Property(property="color", type="string", example="#1d58c6"),
-     *             @OA\Property(property="frequency", type="integer", example=1),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         ))
@@ -52,13 +51,12 @@ class RouteUsageController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"origin","destination","route_type","route_name","color","frequency"},
+     *             required={"origin","destination","route_type","route_name","color"},
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
      *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
      *             @OA\Property(property="route_type", type="string", example="Jeepney"),
      *             @OA\Property(property="route_name", type="string", example="Route 1"),
-     *             @OA\Property(property="color", type="string", example="#1d58c6"),
-     *             @OA\Property(property="frequency", type="integer", example=1)
+     *             @OA\Property(property="color", type="string", example="#1d58c6")
      *         )
      *     ),
      *     @OA\Response(
@@ -72,7 +70,6 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="route_type", type="string", example="Jeepney"),
      *             @OA\Property(property="route_name", type="string", example="Route 1"),
      *             @OA\Property(property="color", type="string", example="#1d58c6"),
-     *             @OA\Property(property="frequency", type="integer", example=1),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         )
@@ -94,11 +91,10 @@ class RouteUsageController extends Controller
             'route_type' => 'required|in:Jeepney,Bus,Taxi',
             'route_name' => 'required|string',
             'color' => 'required|string',
-            'frequency' => 'required|integer',
         ]);
-
+    
         $validatedData['user_id'] = Auth::check() ? Auth::id() : null;
-
+    
         $routeUsage = RouteUsage::create($validatedData);
         return response()->json($routeUsage, 201);
     }
@@ -126,7 +122,6 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="route_type", type="string", example="Jeepney"),
      *             @OA\Property(property="route_name", type="string", example="Route 1"),
      *             @OA\Property(property="color", type="string", example="#1d58c6"),
-     *             @OA\Property(property="frequency", type="integer", example=1),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         )
@@ -139,7 +134,6 @@ class RouteUsageController extends Controller
      *         )
      *     )
      * )
-     */
     public function show($id)
     {
         $routeUsage = RouteUsage::findOrFail($id);
@@ -165,8 +159,7 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
      *             @OA\Property(property="route_type", type="string", example="Jeepney"),
      *             @OA\Property(property="route_name", type="string", example="Route 1"),
-     *             @OA\Property(property="color", type="string", example="#1d58c6"),
-     *             @OA\Property(property="frequency", type="integer", example=1)
+     *             @OA\Property(property="color", type="string", example="#1d58c6")
      *         )
      *     ),
      *     @OA\Response(
@@ -180,7 +173,6 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="route_type", type="string", example="Jeepney"),
      *             @OA\Property(property="route_name", type="string", example="Route 1"),
      *             @OA\Property(property="color", type="string", example="#1d58c6"),
-     *             @OA\Property(property="frequency", type="integer", example=1),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         )
@@ -209,7 +201,6 @@ class RouteUsageController extends Controller
             'route_type' => 'sometimes|required|in:Jeepney,Bus,Taxi',
             'route_name' => 'sometimes|required|string',
             'color' => 'sometimes|required|string',
-            'frequency' => 'sometimes|required|integer',
         ]);
 
         $routeUsage = RouteUsage::findOrFail($id);

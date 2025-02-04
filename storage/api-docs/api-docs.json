@@ -62,9 +62,11 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "User registered successfully"
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "refresh_token": {
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -79,8 +81,7 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "string",
-                                            "example": "The given data was invalid."
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -96,7 +97,7 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Login an existing user",
+                "summary": "Login user and issue JWT and refresh token",
                 "operationId": "8dcb70df1020986038d098cc08d05dae",
                 "requestBody": {
                     "required": true,
@@ -132,32 +133,12 @@
                                 "schema": {
                                     "properties": {
                                         "token": {
-                                            "type": "string",
-                                            "example": "jwt_token"
+                                            "type": "string"
                                         },
                                         "refresh_token": {
-                                            "type": "string",
-                                            "example": "some_refresh_token"
+                                            "type": "string"
                                         },
                                         "user": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "first_name": {
-                                                    "type": "string",
-                                                    "example": "John"
-                                                },
-                                                "last_name": {
-                                                    "type": "string",
-                                                    "example": "Doe"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "john.doe@example.com"
-                                                }
-                                            },
                                             "type": "object"
                                         }
                                     },
@@ -167,14 +148,13 @@
                         }
                     },
                     "401": {
-                        "description": "Unauthorized",
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "error": {
-                                            "type": "string",
-                                            "example": "Unauthorized"
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -190,18 +170,17 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Logout the authenticated user",
+                "summary": "Logout user and delete refresh token",
                 "operationId": "69281b12abb272c76871f19cb17ca563",
                 "responses": {
                     "200": {
-                        "description": "User logged out successfully",
+                        "description": "Successfully logged out",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "string",
-                                            "example": "Successfully logged out"
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -210,17 +189,13 @@
                         }
                     },
                     "500": {
-                        "description": "Failed to invalidate token"
-                    },
-                    "401": {
-                        "description": "Unauthorized",
+                        "description": "Failed to invalidate token",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "error": {
-                                            "type": "string",
-                                            "example": "Unauthorized"
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -228,12 +203,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/auth/refresh": {
@@ -241,7 +211,7 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Refresh JWT token",
+                "summary": "Refresh JWT token using a valid refresh token",
                 "operationId": "b2eae7a8032954d25b46c7ec6f489c68",
                 "requestBody": {
                     "required": true,
@@ -254,7 +224,7 @@
                                 "properties": {
                                     "refresh_token": {
                                         "type": "string",
-                                        "example": "some_refresh_token"
+                                        "example": "your_refresh_token"
                                     }
                                 },
                                 "type": "object"
@@ -270,8 +240,7 @@
                                 "schema": {
                                     "properties": {
                                         "token": {
-                                            "type": "string",
-                                            "example": "new_jwt_token"
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -286,54 +255,7 @@
                                 "schema": {
                                     "properties": {
                                         "error": {
-                                            "type": "string",
-                                            "example": "Invalid refresh token"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/some-user-action": {
-            "post": {
-                "tags": [
-                    "User"
-                ],
-                "summary": "Log some user action",
-                "operationId": "68d14ae49c9fe4ef326435641ddb5e1b",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "action"
-                                ],
-                                "properties": {
-                                    "action": {
-                                        "type": "string",
-                                        "example": "Some action"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Action logged successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Action logged"
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -349,39 +271,20 @@
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Get the authenticated user's identity",
+                "summary": "Get authenticated user's identity",
                 "operationId": "121f36f18dd3069efc97d63c26e88486",
                 "responses": {
                     "200": {
-                        "description": "Authenticated user identity",
+                        "description": "User identity retrieved successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "data": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "first_name": {
-                                                    "type": "string",
-                                                    "example": "John"
-                                                },
-                                                "last_name": {
-                                                    "type": "string",
-                                                    "example": "Doe"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "john.doe@example.com"
-                                                }
-                                            },
                                             "type": "object"
                                         },
                                         "succeeded": {
-                                            "type": "boolean",
-                                            "example": true
+                                            "type": "boolean"
                                         }
                                     },
                                     "type": "object"
@@ -396,8 +299,7 @@
                                 "schema": {
                                     "properties": {
                                         "error": {
-                                            "type": "string",
-                                            "example": "Unauthorized"
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -405,12 +307,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/auth/update-credentials/{id}": {
@@ -424,11 +321,9 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "User ID",
                         "required": true,
                         "schema": {
-                            "type": "integer",
-                            "example": 1
+                            "type": "integer"
                         }
                     }
                 ],
@@ -440,9 +335,7 @@
                                 "required": [
                                     "first_name",
                                     "last_name",
-                                    "current_password",
-                                    "new_password",
-                                    "new_password_confirmation"
+                                    "current_password"
                                 ],
                                 "properties": {
                                     "first_name": {
@@ -456,17 +349,17 @@
                                     "current_password": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "oldPassword123"
+                                        "example": "currentpassword123"
                                     },
                                     "new_password": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "newPassword123"
+                                        "example": "newpassword123"
                                     },
                                     "new_password_confirmation": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "newPassword123"
+                                        "example": "newpassword123"
                                     }
                                 },
                                 "type": "object"
@@ -482,12 +375,25 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "string",
-                                            "example": "User credentials updated successfully"
+                                            "type": "string"
                                         },
                                         "succeeded": {
-                                            "type": "boolean",
-                                            "example": true
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Current password is incorrect",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -502,8 +408,7 @@
                                 "schema": {
                                     "properties": {
                                         "error": {
-                                            "type": "string",
-                                            "example": "Unauthorized"
+                                            "type": "string"
                                         }
                                     },
                                     "type": "object"
@@ -511,12 +416,7 @@
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/bug-reports": {
@@ -2029,10 +1929,6 @@
                                                 "type": "string",
                                                 "example": "Los Angeles"
                                             },
-                                            "frequency": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
                                             "created_at": {
                                                 "type": "string",
                                                 "format": "date-time",
@@ -2110,10 +2006,6 @@
                                             "type": "string",
                                             "example": "Los Angeles"
                                         },
-                                        "frequency": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
                                         "created_at": {
                                             "type": "string",
                                             "format": "date-time",
@@ -2189,10 +2081,6 @@
                                             "type": "string",
                                             "example": "Los Angeles"
                                         },
-                                        "frequency": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
                                         "created_at": {
                                             "type": "string",
                                             "format": "date-time",
@@ -2265,10 +2153,6 @@
                                     "destination": {
                                         "type": "string",
                                         "example": "Los Angeles"
-                                    },
-                                    "frequency": {
-                                        "type": "integer",
-                                        "example": 1
                                     }
                                 },
                                 "type": "object"
@@ -2298,10 +2182,6 @@
                                         "destination": {
                                             "type": "string",
                                             "example": "Los Angeles"
-                                        },
-                                        "frequency": {
-                                            "type": "integer",
-                                            "example": 1
                                         },
                                         "created_at": {
                                             "type": "string",
@@ -2426,11 +2306,6 @@
                                                 "type": "integer",
                                                 "example": 1
                                             },
-                                            "session_id": {
-                                                "type": "string",
-                                                "format": "uuid",
-                                                "example": "123e4567-e89b-12d3-a456-426614174000"
-                                            },
                                             "origin": {
                                                 "type": "string",
                                                 "example": "New York"
@@ -2532,11 +2407,6 @@
                                         "user_id": {
                                             "type": "integer",
                                             "example": 1
-                                        },
-                                        "session_id": {
-                                            "type": "string",
-                                            "format": "uuid",
-                                            "example": "123e4567-e89b-12d3-a456-426614174000"
                                         },
                                         "origin": {
                                             "type": "string",
@@ -2666,10 +2536,6 @@
                                                 "type": "string",
                                                 "example": "#1d58c6"
                                             },
-                                            "frequency": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
                                             "created_at": {
                                                 "type": "string",
                                                 "format": "date-time",
@@ -2710,8 +2576,7 @@
                                     "destination",
                                     "route_type",
                                     "route_name",
-                                    "color",
-                                    "frequency"
+                                    "color"
                                 ],
                                 "properties": {
                                     "origin": {
@@ -2733,10 +2598,6 @@
                                     "color": {
                                         "type": "string",
                                         "example": "#1d58c6"
-                                    },
-                                    "frequency": {
-                                        "type": "integer",
-                                        "example": 1
                                     }
                                 },
                                 "type": "object"
@@ -2779,10 +2640,6 @@
                                             "type": "string",
                                             "example": "#1d58c6"
                                         },
-                                        "frequency": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
                                         "created_at": {
                                             "type": "string",
                                             "format": "date-time",
@@ -2824,7 +2681,7 @@
                     "Route Usages"
                 ],
                 "summary": "Get a specific route usage",
-                "operationId": "fd3b7cee542d80b1e0e26e1faa84ea6d",
+                "operationId": "b009d58bdb990831aac55b0a29e257af",
                 "parameters": [
                     {
                         "name": "id",
@@ -2869,10 +2726,6 @@
                                         "color": {
                                             "type": "string",
                                             "example": "#1d58c6"
-                                        },
-                                        "frequency": {
-                                            "type": "integer",
-                                            "example": 1
                                         },
                                         "created_at": {
                                             "type": "string",
@@ -2954,10 +2807,6 @@
                                     "color": {
                                         "type": "string",
                                         "example": "#1d58c6"
-                                    },
-                                    "frequency": {
-                                        "type": "integer",
-                                        "example": 1
                                     }
                                 },
                                 "type": "object"
@@ -2999,10 +2848,6 @@
                                         "color": {
                                             "type": "string",
                                             "example": "#1d58c6"
-                                        },
-                                        "frequency": {
-                                            "type": "integer",
-                                            "example": 1
                                         },
                                         "created_at": {
                                             "type": "string",
@@ -3108,10 +2953,6 @@
         {
             "name": "Auth",
             "description": "Auth"
-        },
-        {
-            "name": "User",
-            "description": "User"
         },
         {
             "name": "Bug Reports",

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('origin');
             $table->string('destination');
-            $table->integer('frequency')->default(1);
             $table->timestamps();
         });
     }

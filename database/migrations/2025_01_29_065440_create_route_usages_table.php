@@ -19,7 +19,6 @@ return new class extends Migration
             $table->enum('route_type', ['Jeepney', 'Bus', 'Taxi']);
             $table->string('route_name');
             $table->string('color');
-            $table->integer('frequency')->default(0); // Track the frequency of routes taken
             $table->timestamps();
         });
     }
