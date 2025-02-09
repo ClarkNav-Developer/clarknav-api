@@ -16,13 +16,14 @@ class CorsMiddleware
             'https://clarknav.com'
         ];
 
-        if (in_array($request->headers->get('Origin'), $allowedOrigins)) {
-            $response->headers->set('Access-Control-Allow-Origin', $request->headers->get('Origin'));
-        }
+        $origin = $request->headers->get('Origin');
 
-        $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-        $response->headers->set('Access-Control-Allow-Credentials', 'true');
+        if ($origin && in_array($origin, $allowedOrigins)) {
+            $response->headers->set('Access-Control-Allow-Origin', $origin);
+            $response->headers->set('Access-Control-Allow-Credentials', 'true'); // Required for credentials
+            $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+        }
 
         if ($request->isMethod('OPTIONS')) {
             return response()->json('OK', 200, $response->headers->all());
