@@ -3,7 +3,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BugReportController;
 use App\Http\Controllers\FeedbackController;
-use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\LocationSearchController;
 use App\Http\Controllers\NavigationHistoryController;
 use App\Http\Controllers\RouteUsageController;

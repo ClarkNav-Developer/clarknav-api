@@ -93,7 +93,8 @@ class AuthController extends Controller
      *         @OA\JsonContent(
      *             required={"email","password"},
      *             @OA\Property(property="email", type="string", format="email", example="john.doe@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password123")
+     *             @OA\Property(property="password", type="string", format="password", example="password123"),
+     *             @OA\Property(property="remember_me", type="boolean", example=true)
      *         )
      *     ),
      *     @OA\Response(
@@ -121,6 +122,7 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
+        // Attempt login with JWT
         if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
@@ -141,12 +143,19 @@ class AuthController extends Controller
         $tokenCookie = Cookie::make('token', $token, 60 * 24, null, null, false, true);
         $refreshTokenCookie = Cookie::make('refresh_token', $refreshToken, 60 * 24 * 30, null, null, false, true);
 
+        // Handle "Remember Me" manually
+        if ($request->has('remember_me') && $request->remember_me) {
+            $user->setRememberToken(Str::random(60));
+            $user->save();
+        }
+
         return response()->json([
             'token' => $token,
             'refresh_token' => $refreshToken,
             'user' => $user
         ], 200)->withCookie($tokenCookie)->withCookie($refreshTokenCookie);
     }
+
 
     /**
      * @OA\Post(
