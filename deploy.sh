@@ -20,7 +20,7 @@ php artisan optimize
 
 echo "Restarting queue and services..."
 php artisan queue:restart
-sudo systemctl restart php-fpm
+sudo systemctl restart php8.3-fpm
 sudo systemctl restart nginx  # If using Nginx
 
 echo "Deployment complete!"
