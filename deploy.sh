@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /var/www/clarknav  # Change this to your Laravel project path
+cd /var/www/clarknav-api || exit  # Change this to your Laravel project path
 
 echo "Pulling latest changes from GitHub..."
 git pull origin main  # Change 'main' to your branch name if different
