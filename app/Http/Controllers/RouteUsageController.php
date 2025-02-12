@@ -27,7 +27,7 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="id", type="integer", example=1),
      *             @OA\Property(property="user_id", type="integer", example=1),
      *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="jeepney Route 1 Green"),
+     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
      *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
@@ -55,7 +55,7 @@ class RouteUsageController extends Controller
      *         @OA\JsonContent(
      *             required={"route_id","route_name","description","color","origin","destination","route_type"},
      *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="jeepney Route 1 Green"),
+     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
      *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
@@ -70,7 +70,7 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="id", type="integer", example=1),
      *             @OA\Property(property="user_id", type="integer", example=1),
      *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="jeepney Route 1 Green"),
+     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
      *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
@@ -94,11 +94,11 @@ class RouteUsageController extends Controller
         $validatedData = $request->validate([
             'route_id' => 'required|string',
             'route_name' => 'required|string',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'color' => 'required|string',
             'origin' => 'required|string',
             'destination' => 'required|string',
-            'route_type' => 'required|in:jeepney,bus,taxi',
+            'route_type' => 'required|in:jeepney,bus,taxi', // Use lowercase values
         ]);
     
         $validatedData['user_id'] = Auth::check() ? Auth::id() : null;
@@ -126,7 +126,7 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="id", type="integer", example=1),
      *             @OA\Property(property="user_id", type="integer", example=1),
      *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="jeepney Route 1 Green"),
+     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
      *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
@@ -166,7 +166,7 @@ class RouteUsageController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="jeepney Route 1 Green"),
+     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
      *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
@@ -181,7 +181,7 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="id", type="integer", example=1),
      *             @OA\Property(property="user_id", type="integer", example=1),
      *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="jeepney Route 1 Green"),
+     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
      *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
@@ -216,7 +216,7 @@ class RouteUsageController extends Controller
             'color' => 'sometimes|required|string',
             'origin' => 'sometimes|required|string',
             'destination' => 'sometimes|required|string',
-            'route_type' => 'sometimes|required|in:jeepney,bus,taxi',
+            'route_type' => 'sometimes|required|in:jeepney,bus,taxi', // Use lowercase values
         ]);
 
         $routeUsage = RouteUsage::findOrFail($id);
