@@ -32,7 +32,7 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
      *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="jeepney"),
+     *             @OA\Property(property="route_type", type="string", example="Jeepney"),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         ))
@@ -60,7 +60,7 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
      *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="jeepney")
+     *             @OA\Property(property="route_type", type="string", example="Jeepney")
      *         )
      *     ),
      *     @OA\Response(
@@ -75,7 +75,7 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
      *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="jeepney"),
+     *             @OA\Property(property="route_type", type="string", example="Jeepney"),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         )
@@ -98,7 +98,7 @@ class RouteUsageController extends Controller
             'color' => 'required|string',
             'origin' => 'required|string',
             'destination' => 'required|string',
-            'route_type' => 'required|in:jeepney,bus,taxi', // Use lowercase values
+            'route_type' => 'required|in:Jeepney,Bus,Taxi', // Use lowercase values
         ]);
     
         $validatedData['user_id'] = Auth::check() ? Auth::id() : null;
@@ -131,7 +131,7 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
      *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="jeepney"),
+     *             @OA\Property(property="route_type", type="string", example="Jeepney"),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         )
@@ -171,7 +171,7 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
      *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="jeepney")
+     *             @OA\Property(property="route_type", type="string", example="Jeepney")
      *         )
      *     ),
      *     @OA\Response(
@@ -186,7 +186,7 @@ class RouteUsageController extends Controller
      *             @OA\Property(property="color", type="string", example="#228B22"),
      *             @OA\Property(property="origin", type="string", example="Astro Park"),
      *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="jeepney"),
+     *             @OA\Property(property="route_type", type="string", example="Jeepney"),
      *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
      *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
      *         )
@@ -216,7 +216,7 @@ class RouteUsageController extends Controller
             'color' => 'sometimes|required|string',
             'origin' => 'sometimes|required|string',
             'destination' => 'sometimes|required|string',
-            'route_type' => 'sometimes|required|in:jeepney,bus,taxi', // Use lowercase values
+            'route_type' => 'sometimes|required|in:Jeepney,Bus,Taxi', // Use lowercase values
         ]);
 
         $routeUsage = RouteUsage::findOrFail($id);

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('color');
             $table->string('origin');
             $table->string('destination');
-            $table->enum('route_type', ['jeepney', 'bus', 'taxi']); // Use lowercase values
+            $table->enum('route_type', ['Jeepney', 'Bus', 'Taxi']); // Use lowercase values
             $table->timestamps();
         });
     }
