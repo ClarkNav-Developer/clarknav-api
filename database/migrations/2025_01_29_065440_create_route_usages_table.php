@@ -1,33 +1,27 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Models;
 
-return new class extends Migration
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class RouteUsage extends Model
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('route_usages', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
-            $table->string('origin');
-            $table->string('destination');
-            $table->enum('route_type', ['Jeepney', 'Bus', 'Taxi']);
-            $table->string('route_name');
-            $table->string('color');
-            $table->timestamps();
-        });
-    }
+    use HasFactory;
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    protected $fillable = [
+        'user_id',
+        'route_id',
+        'route_name',
+        'description',
+        'color',
+        'origin',
+        'destination',
+        'route_type',
+    ];
+
+    public function user()
     {
-        Schema::dropIfExists('route_usages');
+        return $this->belongsTo(User::class);
     }
-};
+}

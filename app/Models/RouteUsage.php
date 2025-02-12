@@ -1,5 +1,5 @@
 <?php
-// app/Models/RouteUsage.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,17 +10,14 @@ class RouteUsage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 
+        'user_id',
+        'route_id',
+        'route_name',
+        'description',
+        'color',
         'origin',
         'destination',
         'route_type',
-        'route_name',
-        'color',
-        'frequency',
-    ];
-
-    protected $casts = [
-        'route_type' => 'array',
     ];
 
     public function user()

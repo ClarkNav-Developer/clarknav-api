@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Example of creating a test user
-        // User::factory()->create([
-        //     'first_name' => 'Test',
-        //     'last_name' => 'User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::factory()->create([
+            'first_name' => 'Test',
+            'last_name' => 'User',
+            'email' => 'test@example.com',
+        ]);
     }
 }

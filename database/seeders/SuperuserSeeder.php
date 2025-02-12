@@ -13,7 +13,7 @@ class SuperuserSeeder extends Seeder
      */
     public function run(): void
     {
-        $superuserEmail = env('SUPERUSER_EMAIL', 'SuClarkNav@gmail.com');
+        $superuserEmail = env('SUPERUSER_EMAIL', 'ClarkNav2024@gmail.com');
         $superuserPassword = env('SUPERUSER_PASSWORD', 'SuperClarkNav@2024!');
 
         // Check if the superuser already exists
