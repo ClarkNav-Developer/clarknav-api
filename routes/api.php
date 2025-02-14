@@ -7,6 +7,7 @@ use App\Http\Controllers\LocationSearchController;
 use App\Http\Controllers\NavigationHistoryController;
 use App\Http\Controllers\RouteUsageController;
 use App\Http\Controllers\CustomRouteController;
+use App\Http\Controllers\UserController;
 
 // Auth routes
 Route::group(['prefix' => 'auth'], function () {
@@ -16,6 +17,14 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('get-identity', [AuthController::class, 'getIdentity'])->middleware('auth:api');
     Route::put('update-credentials/{id}', [AuthController::class, 'updateCredentials'])->middleware('auth:api');
     Route::post('refresh', [AuthController::class, 'refresh']);
+});
+
+
+Route::middleware(['auth:api', 'checkAdmin'])->group(function () {
+    Route::get('users', [UserController::class, 'index']);
+    Route::get('users/{id}', [UserController::class, 'show']);
+    Route::put('users/{id}', [UserController::class, 'update']);
+    Route::delete('users/{id}', [UserController::class, 'destroy']);
 });
 
 // Bug Reports routes

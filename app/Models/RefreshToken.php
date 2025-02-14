@@ -1,5 +1,5 @@
 <?php
-// filepath: /C:/Users/kenji/OneDrive/Pictures/clarknav-api/app/Models/RefreshToken.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +12,7 @@ class RefreshToken extends Model
     protected $fillable = [
         'user_id',
         'token',
+        'expires_at',
     ];
 
     public function user()

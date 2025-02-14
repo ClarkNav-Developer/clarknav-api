@@ -2520,6 +2520,22 @@
                                                 "type": "integer",
                                                 "example": 1
                                             },
+                                            "route_id": {
+                                                "type": "string",
+                                                "example": "J1"
+                                            },
+                                            "route_name": {
+                                                "type": "string",
+                                                "example": "Jeepney Route 1 Green"
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
+                                            },
+                                            "color": {
+                                                "type": "string",
+                                                "example": "#228B22"
+                                            },
                                             "origin": {
                                                 "type": "string",
                                                 "example": "Astro Park"
@@ -2531,14 +2547,6 @@
                                             "route_type": {
                                                 "type": "string",
                                                 "example": "Jeepney"
-                                            },
-                                            "route_name": {
-                                                "type": "string",
-                                                "example": "Route 1"
-                                            },
-                                            "color": {
-                                                "type": "string",
-                                                "example": "#1d58c6"
                                             },
                                             "created_at": {
                                                 "type": "string",
@@ -2576,13 +2584,31 @@
                         "application/json": {
                             "schema": {
                                 "required": [
+                                    "route_id",
+                                    "route_name",
+                                    "description",
+                                    "color",
                                     "origin",
                                     "destination",
-                                    "route_type",
-                                    "route_name",
-                                    "color"
+                                    "route_type"
                                 ],
                                 "properties": {
+                                    "route_id": {
+                                        "type": "string",
+                                        "example": "J1"
+                                    },
+                                    "route_name": {
+                                        "type": "string",
+                                        "example": "Jeepney Route 1 Green"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "#228B22"
+                                    },
                                     "origin": {
                                         "type": "string",
                                         "example": "Astro Park"
@@ -2594,14 +2620,6 @@
                                     "route_type": {
                                         "type": "string",
                                         "example": "Jeepney"
-                                    },
-                                    "route_name": {
-                                        "type": "string",
-                                        "example": "Route 1"
-                                    },
-                                    "color": {
-                                        "type": "string",
-                                        "example": "#1d58c6"
                                     }
                                 },
                                 "type": "object"
@@ -2624,6 +2642,22 @@
                                             "type": "integer",
                                             "example": 1
                                         },
+                                        "route_id": {
+                                            "type": "string",
+                                            "example": "J1"
+                                        },
+                                        "route_name": {
+                                            "type": "string",
+                                            "example": "Jeepney Route 1 Green"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
+                                        },
+                                        "color": {
+                                            "type": "string",
+                                            "example": "#228B22"
+                                        },
                                         "origin": {
                                             "type": "string",
                                             "example": "Astro Park"
@@ -2635,14 +2669,6 @@
                                         "route_type": {
                                             "type": "string",
                                             "example": "Jeepney"
-                                        },
-                                        "route_name": {
-                                            "type": "string",
-                                            "example": "Route 1"
-                                        },
-                                        "color": {
-                                            "type": "string",
-                                            "example": "#1d58c6"
                                         },
                                         "created_at": {
                                             "type": "string",
@@ -2711,6 +2737,22 @@
                                             "type": "integer",
                                             "example": 1
                                         },
+                                        "route_id": {
+                                            "type": "string",
+                                            "example": "J1"
+                                        },
+                                        "route_name": {
+                                            "type": "string",
+                                            "example": "Jeepney Route 1 Green"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
+                                        },
+                                        "color": {
+                                            "type": "string",
+                                            "example": "#228B22"
+                                        },
                                         "origin": {
                                             "type": "string",
                                             "example": "Astro Park"
@@ -2722,14 +2764,6 @@
                                         "route_type": {
                                             "type": "string",
                                             "example": "Jeepney"
-                                        },
-                                        "route_name": {
-                                            "type": "string",
-                                            "example": "Route 1"
-                                        },
-                                        "color": {
-                                            "type": "string",
-                                            "example": "#1d58c6"
                                         },
                                         "created_at": {
                                             "type": "string",
@@ -2792,6 +2826,22 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
+                                    "route_id": {
+                                        "type": "string",
+                                        "example": "J1"
+                                    },
+                                    "route_name": {
+                                        "type": "string",
+                                        "example": "Jeepney Route 1 Green"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "#228B22"
+                                    },
                                     "origin": {
                                         "type": "string",
                                         "example": "Astro Park"
@@ -2803,14 +2853,6 @@
                                     "route_type": {
                                         "type": "string",
                                         "example": "Jeepney"
-                                    },
-                                    "route_name": {
-                                        "type": "string",
-                                        "example": "Route 1"
-                                    },
-                                    "color": {
-                                        "type": "string",
-                                        "example": "#1d58c6"
                                     }
                                 },
                                 "type": "object"
@@ -2833,6 +2875,22 @@
                                             "type": "integer",
                                             "example": 1
                                         },
+                                        "route_id": {
+                                            "type": "string",
+                                            "example": "J1"
+                                        },
+                                        "route_name": {
+                                            "type": "string",
+                                            "example": "Jeepney Route 1 Green"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
+                                        },
+                                        "color": {
+                                            "type": "string",
+                                            "example": "#228B22"
+                                        },
                                         "origin": {
                                             "type": "string",
                                             "example": "Astro Park"
@@ -2844,14 +2902,6 @@
                                         "route_type": {
                                             "type": "string",
                                             "example": "Jeepney"
-                                        },
-                                        "route_name": {
-                                            "type": "string",
-                                            "example": "Route 1"
-                                        },
-                                        "color": {
-                                            "type": "string",
-                                            "example": "#1d58c6"
                                         },
                                         "created_at": {
                                             "type": "string",
@@ -2951,6 +3001,266 @@
                     }
                 ]
             }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get list of users",
+                "operationId": "7e2f5799553ec93c9c43e2a58490d447",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "first_name": {
+                                                "type": "string",
+                                                "example": "John"
+                                            },
+                                            "last_name": {
+                                                "type": "string",
+                                                "example": "Doe"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "john.doe@example.com"
+                                            },
+                                            "isAdmin": {
+                                                "type": "boolean",
+                                                "example": true
+                                            },
+                                            "isUser": {
+                                                "type": "boolean",
+                                                "example": true
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2023-01-01 00:00:00"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time",
+                                                "example": "2023-01-01 00:00:00"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user by ID",
+                "operationId": "910a0c7cf580e1c605648d82a4e57f46",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "first_name": {
+                                            "type": "string",
+                                            "example": "John"
+                                        },
+                                        "last_name": {
+                                            "type": "string",
+                                            "example": "Doe"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "john.doe@example.com"
+                                        },
+                                        "isAdmin": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "isUser": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01 00:00:00"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01 00:00:00"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update user",
+                "operationId": "ddfe232db1870b82493bf8bd25596d37",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "John"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    },
+                                    "isAdmin": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "isUser": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "first_name": {
+                                            "type": "string",
+                                            "example": "John"
+                                        },
+                                        "last_name": {
+                                            "type": "string",
+                                            "example": "Doe"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "john.doe@example.com"
+                                        },
+                                        "isAdmin": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "isUser": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01 00:00:00"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2023-01-01 00:00:00"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete user",
+                "operationId": "43dd20becb1f47444e484cbb18ce345c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -2981,6 +3291,10 @@
         {
             "name": "Route Usages",
             "description": "Route Usages"
+        },
+        {
+            "name": "User",
+            "description": "User"
         }
     ]
 }
