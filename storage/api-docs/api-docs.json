@@ -3002,13 +3002,13 @@
                 ]
             }
         },
-        "/users": {
+        "/api/users": {
             "get": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Get list of users",
-                "operationId": "7e2f5799553ec93c9c43e2a58490d447",
+                "operationId": "c457726701591d1183b53aa71fc13441",
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -3018,6 +3018,10 @@
                                     "type": "array",
                                     "items": {
                                         "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
                                             "first_name": {
                                                 "type": "string",
                                                 "example": "John"
@@ -3032,7 +3036,7 @@
                                             },
                                             "isAdmin": {
                                                 "type": "boolean",
-                                                "example": true
+                                                "example": false
                                             },
                                             "isUser": {
                                                 "type": "boolean",
@@ -3058,13 +3062,13 @@
                 }
             }
         },
-        "/users/{id}": {
+        "/api/users/{id}": {
             "get": {
                 "tags": [
                     "User"
                 ],
                 "summary": "Get user by ID",
-                "operationId": "910a0c7cf580e1c605648d82a4e57f46",
+                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
                 "parameters": [
                     {
                         "name": "id",
@@ -3082,6 +3086,10 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
                                         "first_name": {
                                             "type": "string",
                                             "example": "John"
@@ -3096,7 +3104,7 @@
                                         },
                                         "isAdmin": {
                                             "type": "boolean",
-                                            "example": true
+                                            "example": false
                                         },
                                         "isUser": {
                                             "type": "boolean",
@@ -3128,7 +3136,7 @@
                     "User"
                 ],
                 "summary": "Update user",
-                "operationId": "ddfe232db1870b82493bf8bd25596d37",
+                "operationId": "b9091397c8b25f12c6adb74be6ce3a5a",
                 "parameters": [
                     {
                         "name": "id",
@@ -3157,13 +3165,9 @@
                                         "type": "string",
                                         "example": "john.doe@example.com"
                                     },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "password"
-                                    },
                                     "isAdmin": {
                                         "type": "boolean",
-                                        "example": true
+                                        "example": false
                                     },
                                     "isUser": {
                                         "type": "boolean",
@@ -3182,6 +3186,10 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
                                         "first_name": {
                                             "type": "string",
                                             "example": "John"
@@ -3196,7 +3204,7 @@
                                         },
                                         "isAdmin": {
                                             "type": "boolean",
-                                            "example": true
+                                            "example": false
                                         },
                                         "isUser": {
                                             "type": "boolean",
@@ -3228,7 +3236,7 @@
                     "User"
                 ],
                 "summary": "Delete user",
-                "operationId": "43dd20becb1f47444e484cbb18ce345c",
+                "operationId": "fa56cffde745d3f152f95cbacd936c0b",
                 "parameters": [
                     {
                         "name": "id",
