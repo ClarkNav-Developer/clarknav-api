@@ -10,8 +10,8 @@ class RouteUsageController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api')->except(['store']);
-        $this->middleware(['auth:api', 'checkAdmin'])->only(['index', 'show', 'update', 'destroy']);
+        $this->middleware('auth:sanctum')->except(['store']);
+        $this->middleware(['auth:sanctum', 'checkAdmin'])->only(['index', 'show', 'update', 'destroy']);
     }
 
     /**
@@ -23,19 +23,7 @@ class RouteUsageController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="List of route usages",
-     *         @OA\JsonContent(type="array", @OA\Items(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
-     *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
-     *             @OA\Property(property="color", type="string", example="#228B22"),
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="Jeepney"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         ))
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/RouteUsage"))
      *     )
      * )
      */
@@ -52,33 +40,12 @@ class RouteUsageController extends Controller
      *     tags={"Route Usages"},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"route_id","route_name","description","color","origin","destination","route_type"},
-     *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
-     *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
-     *             @OA\Property(property="color", type="string", example="#228B22"),
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="Jeepney")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/RouteUsage")
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Route usage created successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
-     *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
-     *             @OA\Property(property="color", type="string", example="#228B22"),
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="Jeepney"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/RouteUsage")
      *     ),
      *     @OA\Response(
      *         response=422,
@@ -122,19 +89,7 @@ class RouteUsageController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Route usage details",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
-     *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
-     *             @OA\Property(property="color", type="string", example="#228B22"),
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="Jeepney"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/RouteUsage")
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -144,6 +99,7 @@ class RouteUsageController extends Controller
      *         )
      *     )
      * )
+     */
     public function show($id)
     {
         $routeUsage = RouteUsage::findOrFail($id);
@@ -164,32 +120,12 @@ class RouteUsageController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
-     *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
-     *             @OA\Property(property="color", type="string", example="#228B22"),
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="Jeepney")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/RouteUsage")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Route usage updated successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="route_id", type="string", example="J1"),
-     *             @OA\Property(property="route_name", type="string", example="Jeepney Route 1 Green"),
-     *             @OA\Property(property="description", type="string", example="Bayanihan Terminal - Mt. Pinatubo Comm."),
-     *             @OA\Property(property="color", type="string", example="#228B22"),
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_type", type="string", example="Jeepney"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/RouteUsage")
      *     ),
      *     @OA\Response(
      *         response=422,

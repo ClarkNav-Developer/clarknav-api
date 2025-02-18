@@ -10,8 +10,8 @@ class LocationSearchController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api')->except(['store']);
-        $this->middleware(['auth:api', 'checkAdmin'])->only(['index', 'show', 'update', 'destroy']);
+        $this->middleware('auth:sanctum')->except(['store']);
+        $this->middleware(['auth:sanctum', 'checkAdmin'])->only(['index', 'show', 'update', 'destroy']);
     }
 
     /**
@@ -23,14 +23,7 @@ class LocationSearchController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="List of location searches",
-     *         @OA\JsonContent(type="array", @OA\Items(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="origin", type="string", example="New York"),
-     *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         ))
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/LocationSearch"))
      *     )
      * )
      */
@@ -47,23 +40,12 @@ class LocationSearchController extends Controller
      *     tags={"Location Searches"},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"origin","destination"},
-     *             @OA\Property(property="origin", type="string", example="New York"),
-     *             @OA\Property(property="destination", type="string", example="Los Angeles")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/LocationSearch")
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Location search created successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="origin", type="string", example="New York"),
-     *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/LocationSearch")
      *     ),
      *     @OA\Response(
      *         response=422,
@@ -105,14 +87,7 @@ class LocationSearchController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Location search details",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="origin", type="string", example="New York"),
-     *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/LocationSearch")
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -143,23 +118,12 @@ class LocationSearchController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"origin","destination"},
-     *             @OA\Property(property="origin", type="string", example="New York"),
-     *             @OA\Property(property="destination", type="string", example="Los Angeles")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/LocationSearch")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Location search updated successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="origin", type="string", example="New York"),
-     *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/LocationSearch")
      *     ),
      *     @OA\Response(
      *         response=422,

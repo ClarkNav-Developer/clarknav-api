@@ -13,22 +13,22 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');  // Added first_name
-            $table->string('last_name');   // Added last_name
-            $table->string('email')->unique();  // Ensured email is unique
-            // $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');  // Password remains the same
-            $table->boolean('isAdmin')->default(false);  // Added isAdmin
-            $table->boolean('isUser')->default(true);    // Added isUser
-            $table->rememberToken();    // Remember token for user sessions
+            $table->string('firstname');
+            $table->string('lastname');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->boolean('isAdmin')->default(false);
+            $table->boolean('isUser')->default(true);
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
 
-        // Schema::create('password_reset_tokens', function (Blueprint $table) {
-        //     $table->string('email')->primary();
-        //     $table->string('token');
-        //     $table->timestamp('created_at')->nullable();
-        // });
+        Schema::create('password_reset_tokens', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
@@ -46,7 +46,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
-        // Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
 };

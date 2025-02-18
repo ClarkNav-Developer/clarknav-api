@@ -10,7 +10,7 @@ class CustomRouteController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:api', 'checkUser']);
+        $this->middleware(['auth:sanctum', 'checkUser']);
     }
 
     /**
@@ -22,21 +22,7 @@ class CustomRouteController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="List of custom routes",
-     *         @OA\JsonContent(type="array", @OA\Items(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_name", type="string", example="Route 1"),
-     *             @OA\Property(property="fare", type="number", format="float", example=50.0),
-     *             @OA\Property(property="student_fare", type="number", format="float", example=40.0),
-     *             @OA\Property(property="duration", type="string", example="1 hour"),
-     *             @OA\Property(property="departure_time", type="string", example="08:00 AM"),
-     *             @OA\Property(property="arrival_time", type="string", example="09:00 AM"),
-     *             @OA\Property(property="departure_date", type="string", format="date", example="2023-01-01"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         ))
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/CustomRoute"))
      *     )
      * )
      */
@@ -55,37 +41,12 @@ class CustomRouteController extends Controller
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"origin","destination","route_name","fare","duration","departure_time","arrival_time","departure_date"},
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_name", type="string", example="Route 1"),
-     *             @OA\Property(property="fare", type="number", format="float", example=50.0),
-     *             @OA\Property(property="student_fare", type="number", format="float", example=40.0),
-     *             @OA\Property(property="duration", type="string", example="1 hour"),
-     *             @OA\Property(property="departure_time", type="string", example="08:00 AM"),
-     *             @OA\Property(property="arrival_time", type="string", example="09:00 AM"),
-     *             @OA\Property(property="departure_date", type="string", format="date", example="2023-01-01")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/CustomRoute")
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Custom route created successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_name", type="string", example="Route 1"),
-     *             @OA\Property(property="fare", type="number", format="float", example=50.0),
-     *             @OA\Property(property="student_fare", type="number", format="float", example=40.0),
-     *             @OA\Property(property="duration", type="string", example="1 hour"),
-     *             @OA\Property(property="departure_time", type="string", example="08:00 AM"),
-     *             @OA\Property(property="arrival_time", type="string", example="09:00 AM"),
-     *             @OA\Property(property="departure_date", type="string", format="date", example="2023-01-01"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/CustomRoute")
      *     ),
      *     @OA\Response(
      *         response=422,
@@ -131,21 +92,7 @@ class CustomRouteController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Custom route details",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_name", type="string", example="Route 1"),
-     *             @OA\Property(property="fare", type="number", format="float", example=50.0),
-     *             @OA\Property(property="student_fare", type="number", format="float", example=40.0),
-     *             @OA\Property(property="duration", type="string", example="1 hour"),
-     *             @OA\Property(property="departure_time", type="string", example="08:00 AM"),
-     *             @OA\Property(property="arrival_time", type="string", example="09:00 AM"),
-     *             @OA\Property(property="departure_date", type="string", format="date", example="2023-01-01"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/CustomRoute")
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -175,36 +122,12 @@ class CustomRouteController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_name", type="string", example="Route 1"),
-     *             @OA\Property(property="fare", type="number", format="float", example=50.0),
-     *             @OA\Property(property="student_fare", type="number", format="float", example=40.0),
-     *             @OA\Property(property="duration", type="string", example="1 hour"),
-     *             @OA\Property(property="departure_time", type="string", example="08:00 AM"),
-     *             @OA\Property(property="arrival_time", type="string", example="09:00 AM"),
-     *             @OA\Property(property="departure_date", type="string", format="date", example="2023-01-01")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/CustomRoute")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Custom route updated successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="origin", type="string", example="Astro Park"),
-     *             @OA\Property(property="destination", type="string", example="Clark Airport Parking"),
-     *             @OA\Property(property="route_name", type="string", example="Route 1"),
-     *             @OA\Property(property="fare", type="number", format="float", example=50.0),
-     *             @OA\Property(property="student_fare", type="number", format="float", example=40.0),
-     *             @OA\Property(property="duration", type="string", example="1 hour"),
-     *             @OA\Property(property="departure_time", type="string", example="08:00 AM"),
-     *             @OA\Property(property="arrival_time", type="string", example="09:00 AM"),
-     *             @OA\Property(property="departure_date", type="string", format="date", example="2023-01-01"),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/CustomRoute")
      *     ),
      *     @OA\Response(
      *         response=422,
@@ -276,5 +199,4 @@ class CustomRouteController extends Controller
         $route->delete();
         return response()->json(['message' => 'Custom route deleted successfully.'], 204);
     }
-
 }

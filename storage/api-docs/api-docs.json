@@ -3,102 +3,17 @@
     "info": {
         "title": "ClarkNav API",
         "description": "API documentation for ClarkNav",
-        "version": "1.0.0"
+        "version": "1.0.1"
     },
     "paths": {
-        "/api/auth/register": {
+        "/login": {
             "post": {
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Register a new user",
-                "operationId": "d764dd091cc4494ae0baf360b03319f3",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "first_name",
-                                    "last_name",
-                                    "email",
-                                    "password",
-                                    "password_confirmation"
-                                ],
-                                "properties": {
-                                    "first_name": {
-                                        "type": "string",
-                                        "example": "John"
-                                    },
-                                    "last_name": {
-                                        "type": "string",
-                                        "example": "Doe"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "john.doe@example.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "password123"
-                                    },
-                                    "password_confirmation": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "password123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "User registered successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "token": {
-                                            "type": "string"
-                                        },
-                                        "refresh_token": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/auth/login": {
-            "post": {
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Login user and issue JWT and refresh token",
-                "operationId": "8dcb70df1020986038d098cc08d05dae",
+                "summary": "Login user",
+                "description": "Logs in a user and returns no content",
+                "operationId": "loginUser",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -117,11 +32,7 @@
                                     "password": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "password123"
-                                    },
-                                    "remember_me": {
-                                        "type": "boolean",
-                                        "example": true
+                                        "example": "password"
                                     }
                                 },
                                 "type": "object"
@@ -130,433 +41,194 @@
                     }
                 },
                 "responses": {
-                    "200": {
-                        "description": "User logged in successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "token": {
-                                            "type": "string"
-                                        },
-                                        "refresh_token": {
-                                            "type": "string"
-                                        },
-                                        "user": {
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                    "204": {
+                        "description": "Successful operation"
                     },
                     "401": {
-                        "description": "Invalid credentials",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Unauthenticated"
                     }
                 }
             }
         },
-        "/api/auth/logout": {
+        "/logout": {
             "post": {
                 "tags": [
                     "Auth"
                 ],
-                "summary": "Logout user and delete refresh token",
-                "operationId": "69281b12abb272c76871f19cb17ca563",
+                "summary": "Logout user",
+                "description": "Logs out the authenticated user and returns no content",
+                "operationId": "logoutUser",
                 "responses": {
-                    "200": {
-                        "description": "Successfully logged out",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Failed to invalidate token",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/auth/refresh": {
-            "post": {
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Refresh JWT token using a valid refresh token",
-                "operationId": "b2eae7a8032954d25b46c7ec6f489c68",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "refresh_token"
-                                ],
-                                "properties": {
-                                    "refresh_token": {
-                                        "type": "string",
-                                        "example": "your_refresh_token"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
+                    "204": {
+                        "description": "Successful operation"
                     }
                 },
-                "responses": {
-                    "200": {
-                        "description": "Token refreshed successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "token": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Invalid refresh token",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/auth/get-identity": {
-            "get": {
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Get authenticated user's identity",
-                "operationId": "121f36f18dd3069efc97d63c26e88486",
-                "responses": {
-                    "200": {
-                        "description": "User identity retrieved successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "type": "object"
-                                        },
-                                        "succeeded": {
-                                            "type": "boolean"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/auth/update-credentials/{id}": {
-            "put": {
-                "tags": [
-                    "Auth"
-                ],
-                "summary": "Update user credentials",
-                "operationId": "993fba9d9dda972e915cf82ffcbacef5",
-                "parameters": [
+                "security": [
                     {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "sanctum": []
                     }
+                ]
+            }
+        },
+        "/email/verification-notification": {
+            "post": {
+                "tags": [
+                    "Auth"
                 ],
+                "summary": "Send email verification notification",
+                "description": "Sends a new email verification notification",
+                "operationId": "sendEmailVerificationNotification",
+                "responses": {
+                    "200": {
+                        "description": "Verification link sent"
+                    },
+                    "302": {
+                        "description": "Already verified"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/reset-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Reset password",
+                "description": "Resets the user's password",
+                "operationId": "resetPassword",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "first_name",
-                                    "last_name",
-                                    "current_password"
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "token"
                                 ],
                                 "properties": {
-                                    "first_name": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newpassword"
+                                    },
+                                    "token": {
+                                        "type": "string",
+                                        "example": "reset-token"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset successful"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/forgot-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Send password reset link",
+                "description": "Sends a password reset link to the user's email",
+                "operationId": "sendPasswordResetLink",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset link sent"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register a new user",
+                "description": "Registers a new user and returns the user details",
+                "operationId": "registerUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "firstname",
+                                    "lastname",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "firstname": {
                                         "type": "string",
                                         "example": "John"
                                     },
-                                    "last_name": {
+                                    "lastname": {
                                         "type": "string",
                                         "example": "Doe"
                                     },
-                                    "current_password": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "password": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "currentpassword123"
+                                        "example": "password"
                                     },
-                                    "new_password": {
+                                    "password_confirmation": {
                                         "type": "string",
                                         "format": "password",
-                                        "example": "newpassword123"
-                                    },
-                                    "new_password_confirmation": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "example": "newpassword123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "User credentials updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string"
-                                        },
-                                        "succeeded": {
-                                            "type": "boolean"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Current password is incorrect",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/bug-reports": {
-            "get": {
-                "tags": [
-                    "Bug Reports"
-                ],
-                "summary": "Get all bug reports",
-                "operationId": "0c69a79bde946dabd8b0e80ce6bb68f5",
-                "responses": {
-                    "200": {
-                        "description": "List of bug reports",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "title": {
-                                                "type": "string",
-                                                "example": "App Crashes When Searching for Routes"
-                                            },
-                                            "category": {
-                                                "type": "string",
-                                                "example": "UI/UX Issue"
-                                            },
-                                            "description": {
-                                                "type": "string",
-                                                "example": "The app crashes when I try to search for a route using public transit."
-                                            },
-                                            "steps": {
-                                                "type": "string",
-                                                "example": "1. Open the app\\n2. Search for a route\\n3. App crashes"
-                                            },
-                                            "expected": {
-                                                "type": "string",
-                                                "example": "The app should display the search results."
-                                            },
-                                            "actual": {
-                                                "type": "string",
-                                                "example": "The app crashes."
-                                            },
-                                            "device": {
-                                                "type": "string",
-                                                "example": "iPhone 12, iOS 14.4"
-                                            },
-                                            "frequency": {
-                                                "type": "string",
-                                                "example": "Always"
-                                            },
-                                            "screenshots": {
-                                                "type": "string",
-                                                "example": "screenshots/example.png",
-                                                "nullable": true
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "tags": [
-                    "Bug Reports"
-                ],
-                "summary": "Create a new bug report",
-                "operationId": "b554e0b8c6b4d789c8c64e088f353e8d",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "title",
-                                    "category",
-                                    "description",
-                                    "steps",
-                                    "expected",
-                                    "actual",
-                                    "device",
-                                    "frequency"
-                                ],
-                                "properties": {
-                                    "title": {
-                                        "type": "string",
-                                        "example": "App Crashes When Searching for Routes"
-                                    },
-                                    "category": {
-                                        "type": "string",
-                                        "example": "UI/UX Issue"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "The app crashes when I try to search for a route using public transit."
-                                    },
-                                    "steps": {
-                                        "type": "string",
-                                        "example": "1. Open the app\\n2. Search for a route\\n3. App crashes"
-                                    },
-                                    "expected": {
-                                        "type": "string",
-                                        "example": "The app should display the search results."
-                                    },
-                                    "actual": {
-                                        "type": "string",
-                                        "example": "The app crashes."
-                                    },
-                                    "device": {
-                                        "type": "string",
-                                        "example": "iPhone 12, iOS 14.4"
-                                    },
-                                    "frequency": {
-                                        "type": "string",
-                                        "example": "Always"
-                                    },
-                                    "screenshots": {
-                                        "type": "string",
-                                        "format": "binary",
-                                        "nullable": true
+                                        "example": "password"
                                     }
                                 },
                                 "type": "object"
@@ -566,61 +238,17 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Bug report created successfully",
+                        "description": "User registered successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "title": {
+                                        "message": {
                                             "type": "string",
-                                            "example": "App Crashes When Searching for Routes"
+                                            "example": "User registered successfully"
                                         },
-                                        "category": {
-                                            "type": "string",
-                                            "example": "UI/UX Issue"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "The app crashes when I try to search for a route using public transit."
-                                        },
-                                        "steps": {
-                                            "type": "string",
-                                            "example": "1. Open the app\\n2. Search for a route\\n3. App crashes"
-                                        },
-                                        "expected": {
-                                            "type": "string",
-                                            "example": "The app should display the search results."
-                                        },
-                                        "actual": {
-                                            "type": "string",
-                                            "example": "The app crashes."
-                                        },
-                                        "device": {
-                                            "type": "string",
-                                            "example": "iPhone 12, iOS 14.4"
-                                        },
-                                        "frequency": {
-                                            "type": "string",
-                                            "example": "Always"
-                                        },
-                                        "screenshots": {
-                                            "type": "string",
-                                            "example": "screenshots/example.png",
-                                            "nullable": true
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
                                         }
                                     },
                                     "type": "object"
@@ -630,17 +258,21 @@
                     },
                     "422": {
                         "description": "Validation error"
+                    },
+                    "419": {
+                        "description": "Page Expired"
                     }
                 }
             }
         },
-        "/api/bug-reports/{id}": {
+        "/verify-email/{id}/{hash}": {
             "get": {
                 "tags": [
-                    "Bug Reports"
+                    "Auth"
                 ],
-                "summary": "Get a specific bug report",
-                "operationId": "bdf1e64b6cb68163a5a15a5d3ed1cbdd",
+                "summary": "Verify email",
+                "description": "Verifies the user's email address",
+                "operationId": "verifyEmail",
                 "parameters": [
                     {
                         "name": "id",
@@ -648,219 +280,27 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "hash",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Bug report details",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "title": {
-                                            "type": "string",
-                                            "example": "App Crashes When Searching for Routes"
-                                        },
-                                        "category": {
-                                            "type": "string",
-                                            "example": "UI/UX Issue"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "The app crashes when I try to search for a route using public transit."
-                                        },
-                                        "steps": {
-                                            "type": "string",
-                                            "example": "1. Open the app\\n2. Search for a route\\n3. App crashes"
-                                        },
-                                        "expected": {
-                                            "type": "string",
-                                            "example": "The app should display the search results."
-                                        },
-                                        "actual": {
-                                            "type": "string",
-                                            "example": "The app crashes."
-                                        },
-                                        "device": {
-                                            "type": "string",
-                                            "example": "iPhone 12, iOS 14.4"
-                                        },
-                                        "frequency": {
-                                            "type": "string",
-                                            "example": "Always"
-                                        },
-                                        "screenshots": {
-                                            "type": "string",
-                                            "example": "screenshots/example.png",
-                                            "nullable": true
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Bug report not found"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Bug Reports"
-                ],
-                "summary": "Update a bug report status",
-                "operationId": "cb2fcd2904e5e41fcfcfba8ed431fcd3",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "status"
-                                ],
-                                "properties": {
-                                    "status": {
-                                        "type": "string",
-                                        "enum": [
-                                            "OPEN",
-                                            "IN_PROGRESS",
-                                            "RESOLVED",
-                                            "CLOSED"
-                                        ],
-                                        "example": "IN_PROGRESS"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
+                    "302": {
+                        "description": "Email verified"
                     }
                 },
-                "responses": {
-                    "200": {
-                        "description": "Bug report updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "title": {
-                                            "type": "string",
-                                            "example": "App Crashes When Searching for Routes"
-                                        },
-                                        "category": {
-                                            "type": "string",
-                                            "example": "UI/UX Issue"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "The app crashes when I try to search for a route using public transit."
-                                        },
-                                        "steps": {
-                                            "type": "string",
-                                            "example": "1. Open the app\\n2. Search for a route\\n3. App crashes"
-                                        },
-                                        "expected": {
-                                            "type": "string",
-                                            "example": "The app should display the search results."
-                                        },
-                                        "actual": {
-                                            "type": "string",
-                                            "example": "The app crashes."
-                                        },
-                                        "device": {
-                                            "type": "string",
-                                            "example": "iPhone 12, iOS 14.4"
-                                        },
-                                        "frequency": {
-                                            "type": "string",
-                                            "example": "Always"
-                                        },
-                                        "screenshots": {
-                                            "type": "string",
-                                            "example": "screenshots/example.png",
-                                            "nullable": true
-                                        },
-                                        "status": {
-                                            "type": "string",
-                                            "example": "IN_PROGRESS"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation error"
-                    },
-                    "404": {
-                        "description": "Bug report not found"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Bug Reports"
-                ],
-                "summary": "Delete a bug report",
-                "operationId": "94a30ad60b3f59f8bb02bf4eca419cf4",
-                "parameters": [
+                "security": [
                     {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
+                        "sanctum": []
                     }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Bug report deleted successfully"
-                    },
-                    "404": {
-                        "description": "Bug report not found"
-                    }
-                }
+                ]
             }
         },
         "/api/custom-routes": {
@@ -878,66 +318,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "user_id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "origin": {
-                                                "type": "string",
-                                                "example": "Astro Park"
-                                            },
-                                            "destination": {
-                                                "type": "string",
-                                                "example": "Clark Airport Parking"
-                                            },
-                                            "route_name": {
-                                                "type": "string",
-                                                "example": "Route 1"
-                                            },
-                                            "fare": {
-                                                "type": "number",
-                                                "format": "float",
-                                                "example": 50
-                                            },
-                                            "student_fare": {
-                                                "type": "number",
-                                                "format": "float",
-                                                "example": 40
-                                            },
-                                            "duration": {
-                                                "type": "string",
-                                                "example": "1 hour"
-                                            },
-                                            "departure_time": {
-                                                "type": "string",
-                                                "example": "08:00 AM"
-                                            },
-                                            "arrival_time": {
-                                                "type": "string",
-                                                "example": "09:00 AM"
-                                            },
-                                            "departure_date": {
-                                                "type": "string",
-                                                "format": "date",
-                                                "example": "2023-01-01"
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            }
-                                        },
-                                        "type": "object"
+                                        "$ref": "#/components/schemas/CustomRoute"
                                     }
                                 }
                             }
@@ -961,58 +342,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "origin",
-                                    "destination",
-                                    "route_name",
-                                    "fare",
-                                    "duration",
-                                    "departure_time",
-                                    "arrival_time",
-                                    "departure_date"
-                                ],
-                                "properties": {
-                                    "origin": {
-                                        "type": "string",
-                                        "example": "Astro Park"
-                                    },
-                                    "destination": {
-                                        "type": "string",
-                                        "example": "Clark Airport Parking"
-                                    },
-                                    "route_name": {
-                                        "type": "string",
-                                        "example": "Route 1"
-                                    },
-                                    "fare": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 50
-                                    },
-                                    "student_fare": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 40
-                                    },
-                                    "duration": {
-                                        "type": "string",
-                                        "example": "1 hour"
-                                    },
-                                    "departure_time": {
-                                        "type": "string",
-                                        "example": "08:00 AM"
-                                    },
-                                    "arrival_time": {
-                                        "type": "string",
-                                        "example": "09:00 AM"
-                                    },
-                                    "departure_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2023-01-01"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/CustomRoute"
                             }
                         }
                     }
@@ -1023,66 +353,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "user_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "origin": {
-                                            "type": "string",
-                                            "example": "Astro Park"
-                                        },
-                                        "destination": {
-                                            "type": "string",
-                                            "example": "Clark Airport Parking"
-                                        },
-                                        "route_name": {
-                                            "type": "string",
-                                            "example": "Route 1"
-                                        },
-                                        "fare": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 50
-                                        },
-                                        "student_fare": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 40
-                                        },
-                                        "duration": {
-                                            "type": "string",
-                                            "example": "1 hour"
-                                        },
-                                        "departure_time": {
-                                            "type": "string",
-                                            "example": "08:00 AM"
-                                        },
-                                        "arrival_time": {
-                                            "type": "string",
-                                            "example": "09:00 AM"
-                                        },
-                                        "departure_date": {
-                                            "type": "string",
-                                            "format": "date",
-                                            "example": "2023-01-01"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/CustomRoute"
                                 }
                             }
                         }
@@ -1134,66 +405,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "user_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "origin": {
-                                            "type": "string",
-                                            "example": "Astro Park"
-                                        },
-                                        "destination": {
-                                            "type": "string",
-                                            "example": "Clark Airport Parking"
-                                        },
-                                        "route_name": {
-                                            "type": "string",
-                                            "example": "Route 1"
-                                        },
-                                        "fare": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 50
-                                        },
-                                        "student_fare": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 40
-                                        },
-                                        "duration": {
-                                            "type": "string",
-                                            "example": "1 hour"
-                                        },
-                                        "departure_time": {
-                                            "type": "string",
-                                            "example": "08:00 AM"
-                                        },
-                                        "arrival_time": {
-                                            "type": "string",
-                                            "example": "09:00 AM"
-                                        },
-                                        "departure_date": {
-                                            "type": "string",
-                                            "format": "date",
-                                            "example": "2023-01-01"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/CustomRoute"
                                 }
                             }
                         }
@@ -1242,48 +454,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "properties": {
-                                    "origin": {
-                                        "type": "string",
-                                        "example": "Astro Park"
-                                    },
-                                    "destination": {
-                                        "type": "string",
-                                        "example": "Clark Airport Parking"
-                                    },
-                                    "route_name": {
-                                        "type": "string",
-                                        "example": "Route 1"
-                                    },
-                                    "fare": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 50
-                                    },
-                                    "student_fare": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 40
-                                    },
-                                    "duration": {
-                                        "type": "string",
-                                        "example": "1 hour"
-                                    },
-                                    "departure_time": {
-                                        "type": "string",
-                                        "example": "08:00 AM"
-                                    },
-                                    "arrival_time": {
-                                        "type": "string",
-                                        "example": "09:00 AM"
-                                    },
-                                    "departure_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2023-01-01"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/CustomRoute"
                             }
                         }
                     }
@@ -1294,66 +465,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "user_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "origin": {
-                                            "type": "string",
-                                            "example": "Astro Park"
-                                        },
-                                        "destination": {
-                                            "type": "string",
-                                            "example": "Clark Airport Parking"
-                                        },
-                                        "route_name": {
-                                            "type": "string",
-                                            "example": "Route 1"
-                                        },
-                                        "fare": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 50
-                                        },
-                                        "student_fare": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 40
-                                        },
-                                        "duration": {
-                                            "type": "string",
-                                            "example": "1 hour"
-                                        },
-                                        "departure_time": {
-                                            "type": "string",
-                                            "example": "08:00 AM"
-                                        },
-                                        "arrival_time": {
-                                            "type": "string",
-                                            "example": "09:00 AM"
-                                        },
-                                        "departure_date": {
-                                            "type": "string",
-                                            "format": "date",
-                                            "example": "2023-01-01"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/CustomRoute"
                                 }
                             }
                         }
@@ -1456,66 +568,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "title": {
-                                                "type": "string",
-                                                "example": "Suggestions for Improving Navigation Experience"
-                                            },
-                                            "feature": {
-                                                "type": "string",
-                                                "example": "It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."
-                                            },
-                                            "usability": {
-                                                "type": "string",
-                                                "example": "The app is difficult to navigate."
-                                            },
-                                            "performance": {
-                                                "type": "string",
-                                                "example": "The app is slow to load."
-                                            },
-                                            "experience": {
-                                                "type": "string",
-                                                "example": "Overall, the app is useful but could be improved."
-                                            },
-                                            "suggestions": {
-                                                "type": "string",
-                                                "example": "Add more features for route planning."
-                                            },
-                                            "priority": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "LOW",
-                                                    "MEDIUM",
-                                                    "HIGH"
-                                                ],
-                                                "example": "LOW"
-                                            },
-                                            "status": {
-                                                "type": "string",
-                                                "enum": [
-                                                    "UNDER_REVIEW",
-                                                    "IN_PROGRESS",
-                                                    "IMPLEMENTED",
-                                                    "CLOSED"
-                                                ],
-                                                "example": "UNDER_REVIEW"
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            }
-                                        },
-                                        "type": "object"
+                                        "$ref": "#/components/schemas/Feedback"
                                     }
                                 }
                             }
@@ -1534,56 +587,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "title",
-                                    "feature"
-                                ],
-                                "properties": {
-                                    "title": {
-                                        "type": "string",
-                                        "example": "Suggestions for Improving Navigation Experience"
-                                    },
-                                    "feature": {
-                                        "type": "string",
-                                        "example": "It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."
-                                    },
-                                    "usability": {
-                                        "type": "string",
-                                        "example": "The app is difficult to navigate."
-                                    },
-                                    "performance": {
-                                        "type": "string",
-                                        "example": "The app is slow to load."
-                                    },
-                                    "experience": {
-                                        "type": "string",
-                                        "example": "Overall, the app is useful but could be improved."
-                                    },
-                                    "suggestions": {
-                                        "type": "string",
-                                        "example": "Add more features for route planning."
-                                    },
-                                    "priority": {
-                                        "type": "string",
-                                        "enum": [
-                                            "LOW",
-                                            "MEDIUM",
-                                            "HIGH"
-                                        ],
-                                        "example": "LOW"
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "enum": [
-                                            "UNDER_REVIEW",
-                                            "IN_PROGRESS",
-                                            "IMPLEMENTED",
-                                            "CLOSED"
-                                        ],
-                                        "example": "UNDER_REVIEW"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/Feedback"
                             }
                         }
                     }
@@ -1594,66 +598,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "title": {
-                                            "type": "string",
-                                            "example": "Suggestions for Improving Navigation Experience"
-                                        },
-                                        "feature": {
-                                            "type": "string",
-                                            "example": "It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."
-                                        },
-                                        "usability": {
-                                            "type": "string",
-                                            "example": "The app is difficult to navigate."
-                                        },
-                                        "performance": {
-                                            "type": "string",
-                                            "example": "The app is slow to load."
-                                        },
-                                        "experience": {
-                                            "type": "string",
-                                            "example": "Overall, the app is useful but could be improved."
-                                        },
-                                        "suggestions": {
-                                            "type": "string",
-                                            "example": "Add more features for route planning."
-                                        },
-                                        "priority": {
-                                            "type": "string",
-                                            "enum": [
-                                                "LOW",
-                                                "MEDIUM",
-                                                "HIGH"
-                                            ],
-                                            "example": "LOW"
-                                        },
-                                        "status": {
-                                            "type": "string",
-                                            "enum": [
-                                                "UNDER_REVIEW",
-                                                "IN_PROGRESS",
-                                                "IMPLEMENTED",
-                                                "CLOSED"
-                                            ],
-                                            "example": "UNDER_REVIEW"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/Feedback"
                                 }
                             }
                         }
@@ -1687,66 +632,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "title": {
-                                            "type": "string",
-                                            "example": "Suggestions for Improving Navigation Experience"
-                                        },
-                                        "feature": {
-                                            "type": "string",
-                                            "example": "It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."
-                                        },
-                                        "usability": {
-                                            "type": "string",
-                                            "example": "The app is difficult to navigate."
-                                        },
-                                        "performance": {
-                                            "type": "string",
-                                            "example": "The app is slow to load."
-                                        },
-                                        "experience": {
-                                            "type": "string",
-                                            "example": "Overall, the app is useful but could be improved."
-                                        },
-                                        "suggestions": {
-                                            "type": "string",
-                                            "example": "Add more features for route planning."
-                                        },
-                                        "priority": {
-                                            "type": "string",
-                                            "enum": [
-                                                "LOW",
-                                                "MEDIUM",
-                                                "HIGH"
-                                            ],
-                                            "example": "LOW"
-                                        },
-                                        "status": {
-                                            "type": "string",
-                                            "enum": [
-                                                "UNDER_REVIEW",
-                                                "IN_PROGRESS",
-                                                "IMPLEMENTED",
-                                                "CLOSED"
-                                            ],
-                                            "example": "UNDER_REVIEW"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/Feedback"
                                 }
                             }
                         }
@@ -1754,7 +640,12 @@
                     "404": {
                         "description": "Feedback not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -1803,66 +694,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "title": {
-                                            "type": "string",
-                                            "example": "Suggestions for Improving Navigation Experience"
-                                        },
-                                        "feature": {
-                                            "type": "string",
-                                            "example": "It would be great if the app could display a 'real-time' indicator for when the next bus or train is arriving."
-                                        },
-                                        "usability": {
-                                            "type": "string",
-                                            "example": "The app is difficult to navigate."
-                                        },
-                                        "performance": {
-                                            "type": "string",
-                                            "example": "The app is slow to load."
-                                        },
-                                        "experience": {
-                                            "type": "string",
-                                            "example": "Overall, the app is useful but could be improved."
-                                        },
-                                        "suggestions": {
-                                            "type": "string",
-                                            "example": "Add more features for route planning."
-                                        },
-                                        "priority": {
-                                            "type": "string",
-                                            "enum": [
-                                                "LOW",
-                                                "MEDIUM",
-                                                "HIGH"
-                                            ],
-                                            "example": "LOW"
-                                        },
-                                        "status": {
-                                            "type": "string",
-                                            "enum": [
-                                                "UNDER_REVIEW",
-                                                "IN_PROGRESS",
-                                                "IMPLEMENTED",
-                                                "CLOSED"
-                                            ],
-                                            "example": "IN_PROGRESS"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/Feedback"
                                 }
                             }
                         }
@@ -1873,7 +705,12 @@
                     "404": {
                         "description": "Feedback not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -1898,7 +735,12 @@
                     "404": {
                         "description": "Feedback not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/location-searches": {
@@ -1916,35 +758,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "user_id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "origin": {
-                                                "type": "string",
-                                                "example": "New York"
-                                            },
-                                            "destination": {
-                                                "type": "string",
-                                                "example": "Los Angeles"
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            }
-                                        },
-                                        "type": "object"
+                                        "$ref": "#/components/schemas/LocationSearch"
                                     }
                                 }
                             }
@@ -1968,21 +782,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "origin",
-                                    "destination"
-                                ],
-                                "properties": {
-                                    "origin": {
-                                        "type": "string",
-                                        "example": "New York"
-                                    },
-                                    "destination": {
-                                        "type": "string",
-                                        "example": "Los Angeles"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/LocationSearch"
                             }
                         }
                     }
@@ -1993,35 +793,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "user_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "origin": {
-                                            "type": "string",
-                                            "example": "New York"
-                                        },
-                                        "destination": {
-                                            "type": "string",
-                                            "example": "Los Angeles"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/LocationSearch"
                                 }
                             }
                         }
@@ -2068,35 +840,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "user_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "origin": {
-                                            "type": "string",
-                                            "example": "New York"
-                                        },
-                                        "destination": {
-                                            "type": "string",
-                                            "example": "Los Angeles"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/LocationSearch"
                                 }
                             }
                         }
@@ -2145,21 +889,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "origin",
-                                    "destination"
-                                ],
-                                "properties": {
-                                    "origin": {
-                                        "type": "string",
-                                        "example": "New York"
-                                    },
-                                    "destination": {
-                                        "type": "string",
-                                        "example": "Los Angeles"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/LocationSearch"
                             }
                         }
                     }
@@ -2170,35 +900,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "user_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "origin": {
-                                            "type": "string",
-                                            "example": "New York"
-                                        },
-                                        "destination": {
-                                            "type": "string",
-                                            "example": "Los Angeles"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/LocationSearch"
                                 }
                             }
                         }
@@ -2301,55 +1003,18 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "user_id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "origin": {
-                                                "type": "string",
-                                                "example": "New York"
-                                            },
-                                            "destination": {
-                                                "type": "string",
-                                                "example": "Los Angeles"
-                                            },
-                                            "route_details": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "string"
-                                                },
-                                                "example": [
-                                                    "Waypoint 1",
-                                                    "Waypoint 2"
-                                                ]
-                                            },
-                                            "navigation_confirmed": {
-                                                "type": "boolean",
-                                                "example": true
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            }
-                                        },
-                                        "type": "object"
+                                        "$ref": "#/components/schemas/NavigationHistory"
                                     }
                                 }
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -2362,37 +1027,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "origin",
-                                    "destination",
-                                    "route_details",
-                                    "navigation_confirmed"
-                                ],
-                                "properties": {
-                                    "origin": {
-                                        "type": "string",
-                                        "example": "New York"
-                                    },
-                                    "destination": {
-                                        "type": "string",
-                                        "example": "Los Angeles"
-                                    },
-                                    "route_details": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        },
-                                        "example": [
-                                            "Waypoint 1",
-                                            "Waypoint 2"
-                                        ]
-                                    },
-                                    "navigation_confirmed": {
-                                        "type": "boolean",
-                                        "example": true
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/NavigationHistory"
                             }
                         }
                     }
@@ -2403,49 +1038,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "user_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "origin": {
-                                            "type": "string",
-                                            "example": "New York"
-                                        },
-                                        "destination": {
-                                            "type": "string",
-                                            "example": "Los Angeles"
-                                        },
-                                        "route_details": {
-                                            "type": "array",
-                                            "items": {
-                                                "type": "string"
-                                            },
-                                            "example": [
-                                                "Waypoint 1",
-                                                "Waypoint 2"
-                                            ]
-                                        },
-                                        "navigation_confirmed": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/NavigationHistory"
                                 }
                             }
                         }
@@ -2466,7 +1059,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/navigation-histories/{id}": {
@@ -2491,9 +1089,27 @@
                         "description": "Navigation history deleted successfully"
                     },
                     "404": {
-                        "description": "Navigation history not found"
+                        "description": "Navigation history not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Navigation history not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/route-usages": {
@@ -2511,55 +1127,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "user_id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "route_id": {
-                                                "type": "string",
-                                                "example": "J1"
-                                            },
-                                            "route_name": {
-                                                "type": "string",
-                                                "example": "Jeepney Route 1 Green"
-                                            },
-                                            "description": {
-                                                "type": "string",
-                                                "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
-                                            },
-                                            "color": {
-                                                "type": "string",
-                                                "example": "#228B22"
-                                            },
-                                            "origin": {
-                                                "type": "string",
-                                                "example": "Astro Park"
-                                            },
-                                            "destination": {
-                                                "type": "string",
-                                                "example": "Clark Airport Parking"
-                                            },
-                                            "route_type": {
-                                                "type": "string",
-                                                "example": "Jeepney"
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01T00:00:00Z"
-                                            }
-                                        },
-                                        "type": "object"
+                                        "$ref": "#/components/schemas/RouteUsage"
                                     }
                                 }
                             }
@@ -2583,46 +1151,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "route_id",
-                                    "route_name",
-                                    "description",
-                                    "color",
-                                    "origin",
-                                    "destination",
-                                    "route_type"
-                                ],
-                                "properties": {
-                                    "route_id": {
-                                        "type": "string",
-                                        "example": "J1"
-                                    },
-                                    "route_name": {
-                                        "type": "string",
-                                        "example": "Jeepney Route 1 Green"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
-                                    },
-                                    "color": {
-                                        "type": "string",
-                                        "example": "#228B22"
-                                    },
-                                    "origin": {
-                                        "type": "string",
-                                        "example": "Astro Park"
-                                    },
-                                    "destination": {
-                                        "type": "string",
-                                        "example": "Clark Airport Parking"
-                                    },
-                                    "route_type": {
-                                        "type": "string",
-                                        "example": "Jeepney"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/RouteUsage"
                             }
                         }
                     }
@@ -2633,55 +1162,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "user_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "route_id": {
-                                            "type": "string",
-                                            "example": "J1"
-                                        },
-                                        "route_name": {
-                                            "type": "string",
-                                            "example": "Jeepney Route 1 Green"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
-                                        },
-                                        "color": {
-                                            "type": "string",
-                                            "example": "#228B22"
-                                        },
-                                        "origin": {
-                                            "type": "string",
-                                            "example": "Astro Park"
-                                        },
-                                        "destination": {
-                                            "type": "string",
-                                            "example": "Clark Airport Parking"
-                                        },
-                                        "route_type": {
-                                            "type": "string",
-                                            "example": "Jeepney"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/RouteUsage"
                                 }
                             }
                         }
@@ -2711,7 +1192,7 @@
                     "Route Usages"
                 ],
                 "summary": "Get a specific route usage",
-                "operationId": "b009d58bdb990831aac55b0a29e257af",
+                "operationId": "fd3b7cee542d80b1e0e26e1faa84ea6d",
                 "parameters": [
                     {
                         "name": "id",
@@ -2728,55 +1209,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "user_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "route_id": {
-                                            "type": "string",
-                                            "example": "J1"
-                                        },
-                                        "route_name": {
-                                            "type": "string",
-                                            "example": "Jeepney Route 1 Green"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
-                                        },
-                                        "color": {
-                                            "type": "string",
-                                            "example": "#228B22"
-                                        },
-                                        "origin": {
-                                            "type": "string",
-                                            "example": "Astro Park"
-                                        },
-                                        "destination": {
-                                            "type": "string",
-                                            "example": "Clark Airport Parking"
-                                        },
-                                        "route_type": {
-                                            "type": "string",
-                                            "example": "Jeepney"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/RouteUsage"
                                 }
                             }
                         }
@@ -2825,37 +1258,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "properties": {
-                                    "route_id": {
-                                        "type": "string",
-                                        "example": "J1"
-                                    },
-                                    "route_name": {
-                                        "type": "string",
-                                        "example": "Jeepney Route 1 Green"
-                                    },
-                                    "description": {
-                                        "type": "string",
-                                        "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
-                                    },
-                                    "color": {
-                                        "type": "string",
-                                        "example": "#228B22"
-                                    },
-                                    "origin": {
-                                        "type": "string",
-                                        "example": "Astro Park"
-                                    },
-                                    "destination": {
-                                        "type": "string",
-                                        "example": "Clark Airport Parking"
-                                    },
-                                    "route_type": {
-                                        "type": "string",
-                                        "example": "Jeepney"
-                                    }
-                                },
-                                "type": "object"
+                                "$ref": "#/components/schemas/RouteUsage"
                             }
                         }
                     }
@@ -2866,55 +1269,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "user_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "route_id": {
-                                            "type": "string",
-                                            "example": "J1"
-                                        },
-                                        "route_name": {
-                                            "type": "string",
-                                            "example": "Jeepney Route 1 Green"
-                                        },
-                                        "description": {
-                                            "type": "string",
-                                            "example": "Bayanihan Terminal - Mt. Pinatubo Comm."
-                                        },
-                                        "color": {
-                                            "type": "string",
-                                            "example": "#228B22"
-                                        },
-                                        "origin": {
-                                            "type": "string",
-                                            "example": "Astro Park"
-                                        },
-                                        "destination": {
-                                            "type": "string",
-                                            "example": "Clark Airport Parking"
-                                        },
-                                        "route_type": {
-                                            "type": "string",
-                                            "example": "Jeepney"
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01T00:00:00Z"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/RouteUsage"
                                 }
                             }
                         }
@@ -3007,8 +1362,9 @@
                 "tags": [
                     "User"
                 ],
-                "summary": "Get list of users",
-                "operationId": "c457726701591d1183b53aa71fc13441",
+                "summary": "Get all users",
+                "description": "Returns a list of all users",
+                "operationId": "getUsers",
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -3017,47 +1373,71 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "first_name": {
-                                                "type": "string",
-                                                "example": "John"
-                                            },
-                                            "last_name": {
-                                                "type": "string",
-                                                "example": "Doe"
-                                            },
-                                            "email": {
-                                                "type": "string",
-                                                "example": "john.doe@example.com"
-                                            },
-                                            "isAdmin": {
-                                                "type": "boolean",
-                                                "example": false
-                                            },
-                                            "isUser": {
-                                                "type": "boolean",
-                                                "example": true
-                                            },
-                                            "created_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01 00:00:00"
-                                            },
-                                            "updated_at": {
-                                                "type": "string",
-                                                "format": "date-time",
-                                                "example": "2023-01-01 00:00:00"
-                                            }
-                                        },
-                                        "type": "object"
+                                        "$ref": "#/components/schemas/User"
                                     }
                                 }
                             }
                         }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create a new user",
+                "description": "Creates a new user",
+                "operationId": "createUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "firstname",
+                                    "lastname",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "firstname": {
+                                        "type": "string",
+                                        "example": "John"
+                                    },
+                                    "lastname": {
+                                        "type": "string",
+                                        "example": "Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    },
+                                    "isAdmin": {
+                                        "type": "boolean",
+                                        "example": false
+                                    },
+                                    "isUser": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created"
+                    },
+                    "422": {
+                        "description": "Validation error"
                     }
                 }
             }
@@ -3068,7 +1448,8 @@
                     "User"
                 ],
                 "summary": "Get user by ID",
-                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
+                "description": "Returns a user by ID",
+                "operationId": "getUserById",
                 "parameters": [
                     {
                         "name": "id",
@@ -3085,43 +1466,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "first_name": {
-                                            "type": "string",
-                                            "example": "John"
-                                        },
-                                        "last_name": {
-                                            "type": "string",
-                                            "example": "Doe"
-                                        },
-                                        "email": {
-                                            "type": "string",
-                                            "example": "john.doe@example.com"
-                                        },
-                                        "isAdmin": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "isUser": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01 00:00:00"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01 00:00:00"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/User"
                                 }
                             }
                         }
@@ -3136,7 +1481,8 @@
                     "User"
                 ],
                 "summary": "Update user",
-                "operationId": "b9091397c8b25f12c6adb74be6ce3a5a",
+                "description": "Updates a user by ID",
+                "operationId": "updateUser",
                 "parameters": [
                     {
                         "name": "id",
@@ -3152,17 +1498,23 @@
                     "content": {
                         "application/json": {
                             "schema": {
+                                "required": [
+                                    "firstname",
+                                    "lastname",
+                                    "email"
+                                ],
                                 "properties": {
-                                    "first_name": {
+                                    "firstname": {
                                         "type": "string",
                                         "example": "John"
                                     },
-                                    "last_name": {
+                                    "lastname": {
                                         "type": "string",
                                         "example": "Doe"
                                     },
                                     "email": {
                                         "type": "string",
+                                        "format": "email",
                                         "example": "john.doe@example.com"
                                     },
                                     "isAdmin": {
@@ -3181,50 +1533,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "first_name": {
-                                            "type": "string",
-                                            "example": "John"
-                                        },
-                                        "last_name": {
-                                            "type": "string",
-                                            "example": "Doe"
-                                        },
-                                        "email": {
-                                            "type": "string",
-                                            "example": "john.doe@example.com"
-                                        },
-                                        "isAdmin": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "isUser": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01 00:00:00"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2023-01-01 00:00:00"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "User updated"
                     },
                     "404": {
                         "description": "User not found"
@@ -3236,7 +1545,8 @@
                     "User"
                 ],
                 "summary": "Delete user",
-                "operationId": "fa56cffde745d3f152f95cbacd936c0b",
+                "description": "Deletes a user by ID",
+                "operationId": "deleteUser",
                 "parameters": [
                     {
                         "name": "id",
@@ -3248,26 +1558,341 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "User deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "User deleted successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
+                    "204": {
+                        "description": "User deleted"
                     },
                     "404": {
                         "description": "User not found"
                     }
                 }
+            }
+        },
+        "/api/getAuthenticatedUser": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get the authenticated user",
+                "description": "Returns the currently authenticated user",
+                "operationId": "getAuthenticatedUser",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "required": [
+                    "firstname",
+                    "lastname",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "firstname": {
+                        "type": "string"
+                    },
+                    "lastname": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password"
+                    },
+                    "isAdmin": {
+                        "type": "boolean"
+                    },
+                    "isUser": {
+                        "type": "boolean"
+                    },
+                    "remember_token": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "CustomRoute": {
+                "required": [
+                    "origin",
+                    "destination",
+                    "route_name",
+                    "fare",
+                    "duration",
+                    "departure_time",
+                    "arrival_time",
+                    "departure_date"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "origin": {
+                        "type": "string"
+                    },
+                    "destination": {
+                        "type": "string"
+                    },
+                    "route_name": {
+                        "type": "string"
+                    },
+                    "fare": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "student_fare": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "duration": {
+                        "type": "string"
+                    },
+                    "departure_time": {
+                        "type": "string"
+                    },
+                    "arrival_time": {
+                        "type": "string"
+                    },
+                    "departure_date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Feedback": {
+                "required": [
+                    "title"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "feature": {
+                        "type": "string"
+                    },
+                    "usability": {
+                        "type": "string"
+                    },
+                    "performance": {
+                        "type": "string"
+                    },
+                    "experience": {
+                        "type": "string"
+                    },
+                    "suggestions": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "string",
+                        "enum": [
+                            "LOW",
+                            "MEDIUM",
+                            "HIGH"
+                        ]
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "UNDER_REVIEW",
+                            "IN_PROGRESS",
+                            "IMPLEMENTED",
+                            "CLOSED"
+                        ]
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "LocationSearch": {
+                "required": [
+                    "origin",
+                    "destination"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "origin": {
+                        "type": "string"
+                    },
+                    "destination": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "NavigationHistory": {
+                "required": [
+                    "origin",
+                    "destination",
+                    "route_details",
+                    "navigation_confirmed"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "origin": {
+                        "type": "string"
+                    },
+                    "destination": {
+                        "type": "string"
+                    },
+                    "route_details": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "navigation_confirmed": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "RouteUsage": {
+                "required": [
+                    "route_id",
+                    "route_name",
+                    "color",
+                    "origin",
+                    "destination",
+                    "route_type"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "route_id": {
+                        "type": "string"
+                    },
+                    "route_name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "color": {
+                        "type": "string"
+                    },
+                    "origin": {
+                        "type": "string"
+                    },
+                    "destination": {
+                        "type": "string"
+                    },
+                    "route_type": {
+                        "type": "string",
+                        "enum": [
+                            "Jeepney",
+                            "Bus",
+                            "Taxi"
+                        ]
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
             }
         }
     },
@@ -3275,10 +1900,6 @@
         {
             "name": "Auth",
             "description": "Auth"
-        },
-        {
-            "name": "Bug Reports",
-            "description": "Bug Reports"
         },
         {
             "name": "Custom Routes",

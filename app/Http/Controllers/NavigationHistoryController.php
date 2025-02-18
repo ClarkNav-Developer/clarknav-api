@@ -10,8 +10,7 @@ class NavigationHistoryController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware(['auth:api', 'checkUser'])->except(['store']);
-        $this->middleware(['auth:api', 'checkUser']);
+        $this->middleware(['auth:sanctum', 'checkUser']);
     }
 
     /**
@@ -19,19 +18,11 @@ class NavigationHistoryController extends Controller
      *     path="/api/navigation-histories",
      *     summary="Get all navigation histories",
      *     tags={"Navigation Histories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="List of navigation histories",
-     *         @OA\JsonContent(type="array", @OA\Items(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="origin", type="string", example="New York"),
-     *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="route_details", type="array", @OA\Items(type="string"), example={"Waypoint 1", "Waypoint 2"}),
-     *             @OA\Property(property="navigation_confirmed", type="boolean", example=true),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         ))
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/NavigationHistory"))
      *     )
      * )
      */
@@ -41,34 +32,21 @@ class NavigationHistoryController extends Controller
         $histories = NavigationHistory::where('user_id', $userId)->get();
         return response()->json($histories);
     }
+
     /**
      * @OA\Post(
      *     path="/api/navigation-histories",
      *     summary="Store a new navigation history",
      *     tags={"Navigation Histories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"origin","destination","route_details","navigation_confirmed"},
-     *             @OA\Property(property="origin", type="string", example="New York"),
-     *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="route_details", type="array", @OA\Items(type="string"), example={"Waypoint 1", "Waypoint 2"}),
-     *             @OA\Property(property="navigation_confirmed", type="boolean", example=true)
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/NavigationHistory")
      *     ),
      *     @OA\Response(
      *         response=201,
      *         description="Navigation history created successfully",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="user_id", type="integer", example=1),
-     *             @OA\Property(property="origin", type="string", example="New York"),
-     *             @OA\Property(property="destination", type="string", example="Los Angeles"),
-     *             @OA\Property(property="route_details", type="array", @OA\Items(type="string"), example={"Waypoint 1", "Waypoint 2"}),
-     *             @OA\Property(property="navigation_confirmed", type="boolean", example=true),
-     *             @OA\Property(property="created_at", type="string", format="date-time", example="2023-01-01T00:00:00Z"),
-     *             @OA\Property(property="updated_at", type="string", format="date-time", example="2023-01-01T00:00:00Z")
-     *         )
+     *         @OA\JsonContent(ref="#/components/schemas/NavigationHistory")
      *     ),
      *     @OA\Response(
      *         response=422,
@@ -104,6 +82,7 @@ class NavigationHistoryController extends Controller
      *     path="/api/navigation-histories/{id}",
      *     summary="Delete a navigation history",
      *     tags={"Navigation Histories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -116,7 +95,10 @@ class NavigationHistoryController extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Navigation history not found"
+     *         description="Navigation history not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Navigation history not found.")
+     *         )
      *     )
      * )
      */
