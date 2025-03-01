@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Notifications\VerifyEmailCustom;
 
 class User extends Authenticatable
 {
@@ -19,12 +21,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'firstname',
-        'lastname',
+        'firstname',  // Add this line
+        'lastname',   // Add this line
         'email',
         'password',
         'isAdmin',
         'isUser',
+        'remember_token',
     ];
 
     /**
@@ -42,11 +45,26 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'email_verified_at' => 'datetime',
+    //         'password' => 'hashed',
+    //     ];
+    // }
+
+    // public function sendEmailVerificationNotification()
+    // {
+    //     $this->notify(new VerifyEmailCustom);
+    // }
+
+    public function isUser()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->isUser;
+    }
+
+    public function isAdmin()
+    {
+        return $this->isAdmin;
     }
 }

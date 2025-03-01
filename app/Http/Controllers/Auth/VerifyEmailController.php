@@ -5,58 +5,26 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 
 class VerifyEmailController extends Controller
 {
     /**
-     * @OA\Get(
-     *     path="/verify-email/{id}/{hash}",
-     *     summary="Verify email",
-     *     description="Verifies the user's email address",
-     *     operationId="verifyEmail",
-     *     tags={"Auth"},
-     *     security={{"sanctum":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Parameter(
-     *         name="hash",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
-     *         response=302,
-     *         description="Email verified"
-     *     ),
-     *     @OA\Header(
-     *         header="X-CSRF-TOKEN",
-     *         description="CSRF token",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     )
-     * )
+     * Mark the authenticated user's email address as verified.
+     *
+     * @param  \Illuminate\Foundation\Auth\EmailVerificationRequest  $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function __invoke(EmailVerificationRequest $request): RedirectResponse
+    public function __invoke(EmailVerificationRequest $request): JsonResponse
     {
         if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(
-                config('app.frontend_url').'/dashboard?verified=1'
-            );
+            return response()->json(['message' => 'Email already verified.'], 200);
         }
 
         if ($request->user()->markEmailAsVerified()) {
             event(new Verified($request->user()));
         }
 
-        return redirect()->intended(
-            config('app.frontend_url').'/dashboard?verified=1'
-        );
+        return response()->json(['message' => 'Email has been verified.'], 200);
     }
 }

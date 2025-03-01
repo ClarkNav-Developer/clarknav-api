@@ -5,247 +5,86 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/api/users",
-     *     summary="Get all users",
-     *     description="Returns a list of all users",
-     *     operationId="getUsers",
-     *     tags={"User"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/User"))
-     *     )
-     * )
-     */
     public function index()
     {
+        if (!auth()->user()->isAdmin()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         $users = User::all();
-        return response()->json($users, 200);
+        return response()->json($users);
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/users",
-     *     summary="Create a new user",
-     *     description="Creates a new user",
-     *     operationId="createUser",
-     *     tags={"User"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"firstname","lastname","email","password"},
-     *             @OA\Property(property="firstname", type="string", example="John"),
-     *             @OA\Property(property="lastname", type="string", example="Doe"),
-     *             @OA\Property(property="email", type="string", format="email", example="john.doe@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password"),
-     *             @OA\Property(property="isAdmin", type="boolean", example=false),
-     *             @OA\Property(property="isUser", type="boolean", example=true)
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="User created"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     )
-     * )
-     */
-    public function store(Request $request)
+    public function show($id)
     {
-        $request->validate([
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
-            'isAdmin' => ['boolean'],
-            'isUser' => ['boolean'],
-        ]);
+        $user = User::findOrFail($id);
 
-        $user = User::create([
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'isAdmin' => $request->isAdmin ?? false,
-            'isUser' => $request->isUser ?? true,
-        ]);
-
-        return response()->json($user, 201);
-    }
-
-    /**
-     * @OA\Get(
-     *     path="/api/users/{id}",
-     *     summary="Get user by ID",
-     *     description="Returns a user by ID",
-     *     operationId="getUserById",
-     *     tags={"User"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/User")
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="User not found"
-     *     )
-     * )
-     */
-    public function show(int $id)
-    {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
+        if (!auth()->user()->isAdmin() && auth()->id() !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        return response()->json($user, 200);
+        return response()->json($user);
     }
 
-    /**
-     * @OA\Put(
-     *     path="/api/users/{id}",
-     *     summary="Update user",
-     *     description="Updates a user by ID",
-     *     operationId="updateUser",
-     *     tags={"User"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"firstname","lastname","email"},
-     *             @OA\Property(property="firstname", type="string", example="John"),
-     *             @OA\Property(property="lastname", type="string", example="Doe"),
-     *             @OA\Property(property="email", type="string", format="email", example="john.doe@example.com"),
-     *             @OA\Property(property="isAdmin", type="boolean", example=false),
-     *             @OA\Property(property="isUser", type="boolean", example=true)
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="User updated"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="User not found"
-     *     )
-     * )
-     */
-    public function update(Request $request, int $id)
+    public function update(Request $request, $id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
+        if (!auth()->user()->isAdmin() && auth()->id() !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        // Check if the authenticated user is an admin or the user themselves
-        if (Auth::user()->id !== $user->id && !Auth::user()->isAdmin) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+        $rules = [
+            'firstname' => ['sometimes', 'string', 'max:255'],
+            'lastname' => ['sometimes', 'string', 'max:255'],
+            'password' => ['sometimes', 'confirmed', Rules\Password::defaults()],
+        ];
+
+        if (auth()->user()->isAdmin()) {
+            $rules['email'] = ['sometimes', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id];
+            $rules['isAdmin'] = ['sometimes', 'boolean'];
+            $rules['isUser'] = ['sometimes', 'boolean'];
         }
 
-        $request->validate([
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'password' => ['nullable', 'string', 'confirmed', Rules\Password::defaults()],
-            'isAdmin' => ['boolean'],
-            'isUser' => ['boolean'],
-        ]);
+        $request->validate($rules);
 
-        $user->update([
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'email' => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : $user->password,
-            'isAdmin' => $request->isAdmin ?? $user->isAdmin,
-            'isUser' => $request->isUser ?? $user->isUser,
-        ]);
+        $data = $request->only('firstname', 'lastname', 'password');
+        if (auth()->user()->isAdmin()) {
+            $data = array_merge($data, $request->only('email', 'isAdmin', 'isUser'));
+        }
 
-        return response()->json($user, 200);
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        return response()->json($user);
     }
 
-    /**
-     * @OA\Delete(
-     *     path="/api/users/{id}",
-     *     summary="Delete user",
-     *     description="Deletes a user by ID",
-     *     operationId="deleteUser",
-     *     tags={"User"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=204,
-     *         description="User deleted"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="User not found"
-     *     )
-     * )
-     */
-    public function destroy(int $id)
+    public function destroy($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
+        if (!auth()->user()->isAdmin() && auth()->id() !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
         }
 
         $user->delete();
 
-        return response()->json(['message' => 'User deleted successfully'], 200);
+        return response()->json(['message' => 'User deleted successfully']);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/getAuthenticatedUser",
-     *     summary="Get the authenticated user",
-     *     description="Returns the currently authenticated user",
-     *     operationId="getAuthenticatedUser",
-     *     tags={"User"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\JsonContent(ref="#/components/schemas/User")
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     )
-     * )
-     */
-    public function getAuthenticatedUser(Request $request)
+    public function getUserRole()
     {
-        $user = $request->user(); // Get the authenticated user
-        if (!$user) {
-            return response()->json(['error' => 'Unauthenticated'], 401);
-        }
-        return response()->json($user, 200);
+        $user = auth()->user();
+        return response()->json([
+            'isAdmin' => $user->isAdmin(),
+            'isUser' => $user->isUser(),
+        ]);
     }
 }

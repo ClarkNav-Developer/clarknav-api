@@ -4,95 +4,51 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * @OA\Post(
-     *     path="/login",
-     *     summary="Login user",
-     *     description="Logs in a user and returns no content",
-     *     operationId="loginUser",
-     *     tags={"Auth"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"email","password"},
-     *             @OA\Property(property="email", type="string", format="email", example="john.doe@example.com"),
-     *             @OA\Property(property="password", type="string", format="password", example="password")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=204,
-     *         description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated"
-     *     ),
-     *     @OA\Header(
-     *         header="X-CSRF-TOKEN",
-     *         description="CSRF token",
-     *         required=true,
-     *         @OA\Schema(
-     *             type="string"
-     *         )
-     *     )
-     * )
+     * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request)
+    public function store(LoginRequest $request): JsonResponse
     {
         $request->authenticate();
 
-        $user = $request->user();
+        // Remove email verification check
+        // if (!$request->user()->hasVerifiedEmail()) {
+        //     Auth::logout(); // Log out the user
+        //     return response()->json([
+        //         'message' => 'Please verify your email address before logging in.',
+        //     ], 403);
+        // }
 
-        $user->tokens()->delete();
+        $request->session()->regenerate();
 
-        $token = $user->createToken('api-token');
+        // Issue a token for API authentication
+        $token = $request->user()->createToken('api-token')->plainTextToken;
 
         return response()->json([
-            'user' => $user,
-            'token' => $token->plainTextToken,
+            'message' => 'Login successful.',
+            'user' => $request->user(),
+            'token' => $token,
         ]);
     }
 
-
     /**
-     * @OA\Post(
-     *     path="/logout",
-     *     summary="Logout user",
-     *     description="Logs out the authenticated user and returns no content",
-     *     operationId="logoutUser",
-     *     tags={"Auth"},
-     *     security={{"sanctum":{}}},
-     *     @OA\Response(
-     *         response=204,
-     *         description="Successful operation"
-     *     )
-     * )
+     * Destroy an authenticated session.
      */
-
-    public function destroy(Request $request)
+    public function destroy(Request $request): JsonResponse
     {
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-        // $request->session()->regenerateToken();
+        $request->session()->regenerateToken();
 
-        // Clear the cookies using the Cookie facade
-        $response = response()->json(['message' => 'Logged out successfully'], 200);
-
-        // Forget XSRF-TOKEN cookie
-        $response->headers->setCookie(Cookie::forget('XSRF-TOKEN', '/', config('session.domain')));
-
-        // Forget laravel_session cookie
-        $response->headers->setCookie(Cookie::forget('laravel_session', '/', config('session.domain')));
-
-        return $response;
+        return response()->json([
+            'message' => 'Logout successful.',
+        ]);
     }
 }
