@@ -54,30 +54,32 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
-
+    
         $user = User::create([
             'first_name' => $validatedData['first_name'],
             'last_name' => $validatedData['last_name'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
+            'isAdmin' => false, // Default to false
+            'isUser' => true,   // Default to true
         ]);
-
+    
         $token = JWTAuth::fromUser($user);
         $refreshToken = Str::random(60);
         $hashedRefreshToken = Hash::make($refreshToken);
-
+    
         // Expire old refresh tokens
         RefreshToken::where('user_id', $user->id)->delete();
-
+    
         RefreshToken::create([
             'user_id' => $user->id,
             'token' => $hashedRefreshToken,
             'expires_at' => now()->addDays(30),
         ]);
-
+    
         $tokenCookie = Cookie::make('token', $token, 60 * 24, null, null, false, true);
         $refreshTokenCookie = Cookie::make('refresh_token', $refreshToken, 60 * 24 * 30, null, null, false, true);
-
+    
         return response()->json(['token' => $token, 'refresh_token' => $refreshToken], 201)
             ->withCookie($tokenCookie)
             ->withCookie($refreshTokenCookie);
@@ -334,19 +336,30 @@ class AuthController extends Controller
             'last_name' => 'required|string|max:255',
             'current_password' => 'required_with:new_password|string',
             'new_password' => 'nullable|string|min:8|confirmed',
+            'isAdmin' => 'nullable|boolean', // Add validation for isAdmin
+            'isUser' => 'nullable|boolean',  // Add validation for isUser
         ]);
-
+    
         $user = User::findOrFail($id);
-
+    
         // Check if the authenticated user is the same as the user being updated
         if ($user->id !== JWTAuth::parseToken()->authenticate()->id) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
+    
         // Update user details
         $user->first_name = $validatedData['first_name'];
         $user->last_name = $validatedData['last_name'];
-
+    
+        // Update roles if provided
+        if ($request->has('isAdmin')) {
+            $user->isAdmin = filter_var($validatedData['isAdmin'], FILTER_VALIDATE_BOOLEAN);
+        }
+        if ($request->has('isUser')) {
+            $user->isUser = filter_var($validatedData['isUser'], FILTER_VALIDATE_BOOLEAN);
+        }
+        
+    
         // Change password if provided
         if (!empty($validatedData['new_password'])) {
             // Check if the current password is correct
@@ -355,9 +368,9 @@ class AuthController extends Controller
             }
             $user->password = Hash::make($validatedData['new_password']);
         }
-
+    
         $user->save();
-
+    
         return response()->json(['message' => 'User credentials updated successfully', 'succeeded' => true], 200);
     }
 }
