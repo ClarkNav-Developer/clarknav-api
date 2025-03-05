@@ -11,7 +11,36 @@ use Illuminate\Support\Facades\Auth;
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Handle an incoming authentication request.
+     * @OA\Post(
+     *     path="/api/login",
+     *     summary="Login",
+     *     description="Handle an incoming authentication request.",
+     *     tags={"Authentication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email","password"},
+     *             @OA\Property(property="email", type="string", format="email", example="kpjaculbia@gmail.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="Yc6l310-31")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login successful.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Login successful."),
+     *             @OA\Property(property="user", type="object"),
+     *             @OA\Property(property="token", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Please verify your email address before logging in.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Please verify your email address before logging in.")
+     *         )
+     *     )
+     * )
      */
     public function store(LoginRequest $request): JsonResponse
     {
@@ -38,7 +67,19 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Destroy an authenticated session.
+     * @OA\Post(
+     *     path="/api/logout",
+     *     summary="Logout",
+     *     description="Destroy an authenticated session.",
+     *     tags={"Authentication"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Logout successful.",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Logout successful.")
+     *         )
+     *     )
+     * )
      */
     public function destroy(Request $request): JsonResponse
     {
