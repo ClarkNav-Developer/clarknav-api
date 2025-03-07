@@ -67,4 +67,9 @@ class User extends Authenticatable
     {
         return $this->isAdmin;
     }
+
+    protected $casts = [
+        'isAdmin' => 'boolean',
+        'isUser' => 'boolean',
+    ];
 }

@@ -1,22 +1,20 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class CheckAdmin
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        Log::info('CheckAdmin middleware executed');
-        if (Auth::check() && Auth::user()->isAdmin) {
-            Log::info('User is admin');
+        if (auth()->user() && auth()->user()->isAdmin) {
             return $next($request);
         }
 
-        Log::warning('Unauthorized access attempt');
         return response()->json(['message' => 'Unauthorized'], 403);
     }
 }

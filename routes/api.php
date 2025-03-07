@@ -50,7 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // Admin Routes
-Route::middleware(['auth:sanctum', 'checkAdmin'])->group(function () {
+Route::middleware(['auth:sanctum', 'isAdmin'])->group(function () {
     Route::get('/feedback', [FeedbackController::class, 'index']);
     Route::get('/feedback/{id}', [FeedbackController::class, 'show']);
     Route::put('/feedback/{id}', [FeedbackController::class, 'update']);
@@ -68,7 +68,7 @@ Route::middleware(['auth:sanctum', 'checkAdmin'])->group(function () {
 });
 
 // User-Specific Routes
-Route::middleware(['auth:sanctum', 'checkUser'])->group(function () {
+Route::middleware(['auth:sanctum', 'isUser'])->group(function () {
     Route::get('/custom-routes', [CustomRouteController::class, 'index']);
     Route::post('/custom-routes', [CustomRouteController::class, 'store']);
     Route::get('/custom-routes/{id}', [CustomRouteController::class, 'show']);

@@ -13,7 +13,7 @@ class FeedbackController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum')->except(['store']);
-        $this->middleware(['auth:sanctum', 'checkAdmin'])->only(['index', 'show', 'update', 'destroy']);
+        $this->middleware(['auth:sanctum', 'isAdmin'])->only(['index', 'show', 'update', 'destroy']);
     }
 
     /**

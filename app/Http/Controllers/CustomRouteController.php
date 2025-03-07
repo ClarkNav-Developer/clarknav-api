@@ -10,7 +10,7 @@ class CustomRouteController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'checkUser']);
+        $this->middleware(['auth:sanctum', 'isUser']);
     }
 
     /**
