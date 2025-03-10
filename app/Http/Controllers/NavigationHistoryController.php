@@ -19,6 +19,7 @@ class NavigationHistoryController extends Controller
      *     path="/api/navigation-histories",
      *     summary="Get all navigation histories",
      *     tags={"Navigation Histories"},
+     *     security={{"bearerAuth":{}}},
      *     @OA\Response(
      *         response=200,
      *         description="List of navigation histories",

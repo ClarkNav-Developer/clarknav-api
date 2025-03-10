@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'ClarkNav'),
 
     /*
     |--------------------------------------------------------------------------
@@ -173,8 +173,8 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        
- ],
+
+    ],
 
     /*
     |--------------------------------------------------------------------------

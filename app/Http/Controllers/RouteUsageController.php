@@ -98,7 +98,7 @@ class RouteUsageController extends Controller
             'color' => 'required|string',
             'origin' => 'required|string',
             'destination' => 'required|string',
-            'route_type' => 'required|in:Jeepney,Bus,Taxi', // Use lowercase values
+            'route_type' => 'required|in:Jeepney,Bus,Taxi,Walking', // Use lowercase values
         ]);
     
         $validatedData['user_id'] = Auth::check() ? Auth::id() : null;
@@ -144,6 +144,8 @@ class RouteUsageController extends Controller
      *         )
      *     )
      * )
+     *      
+     * */
     public function show($id)
     {
         $routeUsage = RouteUsage::findOrFail($id);
@@ -216,7 +218,7 @@ class RouteUsageController extends Controller
             'color' => 'sometimes|required|string',
             'origin' => 'sometimes|required|string',
             'destination' => 'sometimes|required|string',
-            'route_type' => 'sometimes|required|in:Jeepney,Bus,Taxi', // Use lowercase values
+            'route_type' => 'sometimes|required|in:Jeepney,Bus,Taxi,Walking', // Use lowercase values
         ]);
 
         $routeUsage = RouteUsage::findOrFail($id);

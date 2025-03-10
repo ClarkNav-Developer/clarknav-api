@@ -13,6 +13,13 @@ use Illuminate\Routing\Controller as BaseController;
  *     version="1.0.0",
  *     description="API documentation for ClarkNav"
  * )
+ * 
+ * @OA\SecurityScheme(
+ *     type="http",
+ *     scheme="bearer",
+ *     securityScheme="bearerAuth",
+ *     bearerFormat="JWT",
+ * )
  */
 abstract class Controller extends BaseController
 {

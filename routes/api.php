@@ -17,6 +17,11 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('get-identity', [AuthController::class, 'getIdentity'])->middleware('auth:api');
     Route::put('update-credentials/{id}', [AuthController::class, 'updateCredentials'])->middleware('auth:api');
     Route::post('refresh', [AuthController::class, 'refresh']);
+
+    Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('reset-password', [AuthController::class, 'resetPassword']);
+    Route::get('verify-email/{token}', [AuthController::class, 'verifyEmail']);
+    Route::post('resend-verification', [AuthController::class, 'resendVerification']);
 });
 
 

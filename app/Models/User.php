@@ -52,6 +52,16 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Check if the user's email is verified.
+     *
+     * @return bool
+     */
+    public function hasVerifiedEmail()
+    {
+        return !is_null($this->email_verified_at);
+    }
+
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
