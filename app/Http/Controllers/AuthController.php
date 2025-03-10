@@ -563,7 +563,7 @@ class AuthController extends Controller
         DB::table('email_verification_tokens')->where('token', $token)->delete();
 
         // Redirect to the frontend login page with a success message
-        return redirect()->away(env('FRONTEND_URL', 'http://localhost:4200') . '/login?verified=true');
+        return redirect()->away(env('FRONTEND_URL', 'https://clarknav.com') . '/login?verified=true');
     }
 
     /**

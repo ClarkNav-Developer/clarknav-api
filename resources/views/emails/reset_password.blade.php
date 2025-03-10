@@ -197,7 +197,7 @@
             <h1>Reset Your Password</h1>
             <p>You're receiving this email because you requested a password reset for your ClarkNav account.</p>
             <p>Click the button below to reset your password. This link will expire in 60 minutes.</p>
-            <a href="{{ env('FRONTEND_URL', 'http://localhost:4200') }}/reset-password?token={{ $token }}&email={{ $user->email }}"
+            <a href="{{ env('FRONTEND_URL', 'https://clarknav.com') }}/reset-password?token={{ $token }}&email={{ $user->email }}"
                 class="btn">Reset Password</a>
             <p>If you did not request a password reset, please ignore this email or contact support if you have
                 concerns.</p>
