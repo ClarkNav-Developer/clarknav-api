@@ -1,0 +1,15 @@
+node_modules
+vendor
+storage/*.key
+.env
+.env.*
+*.log
+.idea
+.vscode
+.git
+.gitignore
+docker-compose.yml
+deploy.sh
+deploy.log
+deploy_debug.log
+/public/storage
